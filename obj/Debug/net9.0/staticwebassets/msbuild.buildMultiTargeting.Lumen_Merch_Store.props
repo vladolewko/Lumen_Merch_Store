@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Lumen_Merch_Store.props" />
+</Project>
