@@ -5,10 +5,14 @@ ASP.NET Core web-store with MySQL DB.
 ## Installation Guide
 
 ### Requirements
+
+
 - .NET 8.0 SDK
 - MySQL Server 8.0+
 
+
 ### Steps to Run
+
 
 1. **Clone**
    ```bash
@@ -21,7 +25,7 @@ ASP.NET Core web-store with MySQL DB.
    dotnet restore
    ```
 
-3**Replace connection string to your data**
+3. **Replace connection string to your data**
 
    File `appsettings.json`:
    ```json
@@ -40,9 +44,11 @@ ASP.NET Core web-store with MySQL DB.
    dotnet run
    ```
 
+
 Application URL: https://localhost:5001
 
 ## Project Structure
+
 
 - `Controllers/` - MVC controllers
 - `Models/` - Entity Framework models
@@ -50,7 +56,9 @@ Application URL: https://localhost:5001
 - `Data/` - DbContext
 - `ViewModels/` - models for views
 
+
 ## Authentication & Authorization
+
 
 - Registration: `/Account/Register`
 - Login: `/Account/Login`

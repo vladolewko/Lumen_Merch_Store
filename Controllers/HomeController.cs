@@ -1,6 +1,6 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Lumen_Merch_Store.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Lumen_Merch_Store.Controllers;
 

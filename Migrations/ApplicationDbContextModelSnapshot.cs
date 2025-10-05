@@ -86,11 +86,7 @@ namespace Lumen_Merch_Store.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
                         .HasColumnName("photo_url");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int")
-                        .HasColumnName("role_id");
-
+                    
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
@@ -109,9 +105,7 @@ namespace Lumen_Merch_Store.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("RoleId");
-
+                    
                     b.ToTable("users", (string)null);
                 });
 
@@ -322,38 +316,6 @@ namespace Lumen_Merch_Store.Migrations
                     b.ToTable("product_sizes", (string)null);
                 });
 
-            modelBuilder.Entity("Lumen_Merch_Store.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("roles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "User"
-                        });
-                });
-
             modelBuilder.Entity("Lumen_Merch_Store.Models.Universe", b =>
                 {
                     b.Property<int>("Id")
@@ -508,17 +470,6 @@ namespace Lumen_Merch_Store.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Lumen_Merch_Store.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("Lumen_Merch_Store.Models.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Lumen_Merch_Store.Models.Favorite", b =>
@@ -687,11 +638,6 @@ namespace Lumen_Merch_Store.Migrations
             modelBuilder.Entity("Lumen_Merch_Store.Models.ProductSize", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("Lumen_Merch_Store.Models.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Lumen_Merch_Store.Models.Universe", b =>

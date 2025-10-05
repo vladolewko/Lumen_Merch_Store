@@ -12,31 +12,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Налаштування Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
-{
-    // Налаштування паролів
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
+    {
+        // Налаштування паролів
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = true;
+        options.Password.RequiredLength = 6;
+        options.Password.RequiredUniqueChars = 1;
 
-    // Налаштування блокування
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
+        // Налаштування блокування
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.AllowedForNewUsers = true;
 
-    // Налаштування користувача
-    options.User.AllowedUserNameCharacters =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = true;
+        // Налаштування користувача
+        options.User.AllowedUserNameCharacters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        options.User.RequireUniqueEmail = true;
 
-    // Налаштування підтвердження email
-    options.SignIn.RequireConfirmedEmail = false;
-    options.SignIn.RequireConfirmedPhoneNumber = false;
-})
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+        // Налаштування підтвердження email
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Налаштування cookies
 builder.Services.ConfigureApplicationCookie(options =>
@@ -69,8 +69,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
 // Створення ролей за замовчуванням
 using (var scope = app.Services.CreateScope())
@@ -80,7 +80,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
-        
+
         await context.Database.MigrateAsync();
         await SeedRoles(roleManager);
     }
@@ -97,13 +97,10 @@ app.Run();
 async Task SeedRoles(RoleManager<IdentityRole<int>> roleManager)
 {
     string[] roleNames = { "Admin", "User" };
-    
+
     foreach (var roleName in roleNames)
     {
         var roleExists = await roleManager.RoleExistsAsync(roleName);
-        if (!roleExists)
-        {
-            await roleManager.CreateAsync(new IdentityRole<int> { Name = roleName });
-        }
+        if (!roleExists) await roleManager.CreateAsync(new IdentityRole<int> { Name = roleName });
     }
 }

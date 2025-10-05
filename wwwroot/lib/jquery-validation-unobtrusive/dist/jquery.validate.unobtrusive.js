@@ -13,10 +13,12 @@
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define("jquery.validate.unobtrusive", ['jquery-validation'], factory);
-    } else if (typeof module === 'object' && module.exports) {
+    }
+    else if (typeof module === 'object' && module.exports) {
         // CommonJS-like environments that support module.exports     
         module.exports = factory(require('jquery-validation'));
-    } else {
+    }
+    else {
         // Browser global
         jQuery.validator.unobtrusive = factory(jQuery);
     }
@@ -114,14 +116,14 @@
         }
 
         $form.find(".validation-summary-errors")
-            .addClass("validation-summary-valid")
-            .removeClass("validation-summary-errors");
+             .addClass("validation-summary-valid")
+             .removeClass("validation-summary-errors");
         $form.find(".field-validation-error")
-            .addClass("field-validation-valid")
-            .removeClass("field-validation-error")
-            .removeData("unobtrusiveContainer")
-            .find(">*")  // If we were using valmsg-replace, get the underlying error
-            .removeData("unobtrusiveContainer");
+             .addClass("field-validation-valid")
+             .removeClass("field-validation-error")
+             .removeData("unobtrusiveContainer")
+             .find(">*")  // If we were using valmsg-replace, get the underlying error
+             .removeData("unobtrusiveContainer");
     }
 
     function validationInfo(form) {
@@ -136,31 +138,31 @@
 
         if (!result) {
             result = {
-                options: {  // options structure passed to jQuery Validate's validate() method
-                    errorClass: defaultOptions.errorClass || "input-validation-error",
-                    errorElement: defaultOptions.errorElement || "span",
-                    errorPlacement: function () {
+                options          : {  // options structure passed to jQuery Validate's validate() method
+                    errorClass     : defaultOptions.errorClass || "input-validation-error",
+                    errorElement   : defaultOptions.errorElement || "span",
+                    errorPlacement : function () {
                         onError.apply(form, arguments);
                         execInContext("errorPlacement", arguments);
                     },
-                    invalidHandler: function () {
+                    invalidHandler : function () {
                         onErrors.apply(form, arguments);
                         execInContext("invalidHandler", arguments);
                     },
-                    messages: {},
-                    rules: {},
-                    success: function () {
+                    messages       : {},
+                    rules          : {},
+                    success        : function () {
                         onSuccess.apply(form, arguments);
                         execInContext("success", arguments);
                     }
                 },
-                attachValidation: function () {
+                attachValidation : function () {
                     $form
                         .off("reset." + data_validation, onResetProxy)
                         .on("reset." + data_validation, onResetProxy)
                         .validate(this.options);
                 },
-                validate: function () {  // a validation function that is called by unobtrusive Ajax
+                validate         : function () {  // a validation function that is called by unobtrusive Ajax
                     $form.validate();
                     return $form.valid();
                 }
@@ -172,9 +174,9 @@
     }
 
     $jQval.unobtrusive = {
-        adapters: [],
+        adapters : [],
 
-        parseElement: function (element, skipAttach) {
+        parseElement : function (element, skipAttach) {
             /// <summary>
             /// Parses a single HTML element for unobtrusive validation attributes.
             /// </summary>
@@ -208,24 +210,24 @@
                     });
 
                     this.adapt({
-                        element: element,
-                        form: form,
-                        message: message,
-                        params: paramValues,
-                        rules: rules,
-                        messages: messages
-                    });
+                                   element  : element,
+                                   form     : form,
+                                   message  : message,
+                                   params   : paramValues,
+                                   rules    : rules,
+                                   messages : messages
+                               });
                 }
             });
 
-            $.extend(rules, { "__dummy__": true });
+            $.extend(rules, {"__dummy__" : true});
 
             if (!skipAttach) {
                 valInfo.attachValidation();
             }
         },
 
-        parse: function (selector) {
+        parse : function (selector) {
             /// <summary>
             /// Parses all the HTML elements in the specified selector. It looks for input elements decorated
             /// with the [data-val=true] attribute value and enables validation according to the data-val-*
@@ -237,10 +239,10 @@
             // element with data-val=true
             var $selector = $(selector),
                 $forms = $selector.parents()
-                    .addBack()
-                    .filter("form")
-                    .add($selector.find("form"))
-                    .has("[data-val=true]");
+                                  .addBack()
+                                  .filter("form")
+                                  .add($selector.find("form"))
+                                  .has("[data-val=true]");
 
             $selector.find("[data-val=true]").each(function () {
                 $jQval.unobtrusive.parseElement(this, true);
@@ -271,7 +273,7 @@
             fn = params;
             params = [];
         }
-        this.push({ name: adapterName, params: params, adapt: fn });
+        this.push({name : adapterName, params : params, adapt : fn});
         return this;
     };
 
@@ -362,7 +364,8 @@
     if ($jQval.methods.extension) {
         adapters.addSingleVal("accept", "mimtype");
         adapters.addSingleVal("extension", "extension");
-    } else {
+    }
+    else {
         // for backward compatibility, when the 'extension' validation method does not exist, such as with versions
         // of JQuery Validation plugin prior to 1.10, we should use the 'accept' method for
         // validating the extension, and ignore mime-type validations as they are not supported.
@@ -389,10 +392,10 @@
     });
     adapters.add("remote", ["url", "type", "additionalfields"], function (options) {
         var value = {
-            url: options.params.url,
-            type: options.params.type || "GET",
-            data: {}
-        },
+                url  : options.params.url,
+                type : options.params.type || "GET",
+                data : {}
+            },
             prefix = getModelPrefix(options.element.name);
 
         $.each(splitAndTrim(options.params.additionalfields || options.element.name), function (i, fieldName) {

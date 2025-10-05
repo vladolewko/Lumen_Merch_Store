@@ -7,18 +7,17 @@ namespace Lumen_Merch_Store.Models;
 public class Order
 {
     public int Id { get; set; }
-        
-    [Required]
-    public int UserId { get; set; }
-        
+
+    [Required] public int UserId { get; set; }
+
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
-        
+
     [Required]
     [Column(TypeName = "decimal(10,2)")]
     public decimal Total { get; set; }
-        
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        
+
     // Navigation properties
     public virtual ApplicationUser User { get; set; } = null!;
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

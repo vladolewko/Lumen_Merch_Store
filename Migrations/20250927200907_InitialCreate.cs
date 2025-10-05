@@ -52,22 +52,7 @@ namespace Lumen_Merch_Store.Migrations
                     table.PrimaryKey("PK_categories", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "roles",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_roles", x => x.id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
+            
             migrationBuilder.CreateTable(
                 name: "universes",
                 columns: table => new
@@ -115,7 +100,6 @@ namespace Lumen_Merch_Store.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    role_id = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     phone = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
@@ -147,12 +131,6 @@ namespace Lumen_Merch_Store.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_users_roles_role_id",
-                        column: x => x.role_id,
-                        principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -399,15 +377,6 @@ namespace Lumen_Merch_Store.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.InsertData(
-                table: "roles",
-                columns: new[] { "id", "name" },
-                values: new object[,]
-                {
-                    { 1, "Admin" },
-                    { 2, "User" }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -484,11 +453,6 @@ namespace Lumen_Merch_Store.Migrations
                 name: "EmailIndex",
                 table: "users",
                 column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_users_role_id",
-                table: "users",
-                column: "role_id");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

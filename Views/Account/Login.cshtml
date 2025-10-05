@@ -10,34 +10,47 @@
                 <h2>Вхід до системи</h2>
             </div>
             <div class="card-body">
-                <form asp-action="Login" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    
+                <form asp-action="Login"
+                    method="post">
+                    <div asp-validation-summary="ModelOnly"
+                        class="text-danger"></div>
+
                     <div class="form-group mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <label asp-for="Email"
+                            class="form-label"></label>
+                        <input asp-for="Email"
+                            class="form-control"/>
+                        <span asp-validation-for="Email"
+                            class="text-danger"></span>
                     </div>
-                    
+
                     <div class="form-group mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <label asp-for="Password"
+                            class="form-label"></label>
+                        <input asp-for="Password"
+                            class="form-control"/>
+                        <span asp-validation-for="Password"
+                            class="text-danger"></span>
                     </div>
-                    
+
                     <div class="form-check mb-3">
-                        <input asp-for="RememberMe" class="form-check-input" />
-                        <label asp-for="RememberMe" class="form-check-label"></label>
+                        <input asp-for="RememberMe"
+                            class="form-check-input"/>
+                        <label asp-for="RememberMe"
+                            class="form-check-label"></label>
                     </div>
-                    
+
                     <div class="form-group">
-                        <input type="submit" value="Увійти" class="btn btn-primary" />
+                        <input type="submit"
+                            value="Увійти"
+                            class="btn btn-primary"/>
                     </div>
                 </form>
-                
-                <hr />
+
+                <hr/>
                 <p>
-                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Зареєструватися як новий користувач</a>
+                    <a asp-action="Register"
+                        asp-route-returnurl="@ViewData["ReturnUrl"]">Зареєструватися як новий користувач</a>
                 </p>
             </div>
         </div>
