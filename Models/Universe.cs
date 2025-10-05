@@ -11,5 +11,5 @@ public class Universe
     public string? Description { get; set; }
 
     // Navigation property
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }

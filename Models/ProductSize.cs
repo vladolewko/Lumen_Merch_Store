@@ -13,6 +13,6 @@ public class ProductSize
     public int Stock { get; set; } = 0;
 
     // Navigation properties
-    public virtual Product Product { get; set; } = null!;
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public Product Product { get; set; } = null!;
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

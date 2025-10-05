@@ -19,6 +19,6 @@ public class Order
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
-    public virtual ApplicationUser User { get; set; } = null!;
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public ApplicationUser User { get; set; } = null!;
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 }

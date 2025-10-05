@@ -20,7 +20,7 @@ public class OrderItem
     public decimal Price { get; set; }
 
     // Navigation properties
-    public virtual Order Order { get; set; } = null!;
-    public virtual Product Product { get; set; } = null!;
-    public virtual ProductSize? Size { get; set; }
+    public Order Order { get; set; } = null!;
+    public Product Product { get; set; } = null!;
+    public ProductSize? Size { get; set; }
 }

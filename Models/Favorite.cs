@@ -15,6 +15,6 @@ public class Favorite
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
-    public virtual ApplicationUser User { get; set; } = null!;
-    public virtual Product Product { get; set; } = null!;
+    public ApplicationUser User { get; set; } = null!;
+    public Product Product { get; set; } = null!;
 }

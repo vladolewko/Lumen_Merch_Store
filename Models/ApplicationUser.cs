@@ -14,6 +14,6 @@ public class ApplicationUser : IdentityUser<int>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
+    public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 }
