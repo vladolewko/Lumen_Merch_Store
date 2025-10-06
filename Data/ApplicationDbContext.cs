@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lumen_Merch_Store.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Universe> Universes { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductTranslation> ProductTranslations { get; set; }
+    public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+    public DbSet<UniverseTranslation> UniverseTranslations { get; set; }
+    public DbSet<Language> Languages { get; set; }
     public DbSet<ProductSize> ProductSizes { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
@@ -24,12 +24,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     {
         base.OnModelCreating(builder);
 
-        // Налаштування для enum
+        // For enum
         builder.Entity<Order>()
             .Property(e => e.Status)
             .HasConversion<string>();
 
-        // Налаштування зв'язків
+        // Settings up relations
         builder.Entity<Product>()
             .HasOne(p => p.Universe)
             .WithMany(u => u.Products)
@@ -46,6 +46,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasOne(ps => ps.Product)
             .WithMany(p => p.ProductSizes)
             .HasForeignKey(ps => ps.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ProductTranslation>()
+            .HasOne(pt => pt.Product)
+            .WithMany(p => p.Translations)
+            .HasForeignKey(pt => pt.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Order>()
@@ -84,16 +90,28 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasForeignKey(f => f.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Перейменування таблиць Identity для відповідності схемі БД
-        builder.Entity<ApplicationUser>().ToTable("users");
-        builder.Entity<IdentityRole<int>>().ToTable("AspNetRoles");
-        builder.Entity<IdentityUserRole<int>>().ToTable("AspNetUserRoles");
-        builder.Entity<IdentityUserClaim<int>>().ToTable("AspNetUserClaims");
-        builder.Entity<IdentityUserLogin<int>>().ToTable("AspNetUserLogins");
-        builder.Entity<IdentityUserToken<int>>().ToTable("AspNetUserTokens");
-        builder.Entity<IdentityRoleClaim<int>>().ToTable("AspNetRoleClaims");
+        builder.Entity<CategoryTranslation>()
+            .HasOne(ct => ct.Category)
+            .WithMany(c => c.Translations)
+            .HasForeignKey(ct => ct.CategoryId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        // Перейменування колонок для users таблиці
+        builder.Entity<UniverseTranslation>()
+            .HasOne(ut => ut.Universe)
+            .WithMany(u => u.Translations)
+            .HasForeignKey(ut => ut.UniverseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Renaming Identity tables to match the DB schema
+        builder.Entity<ApplicationUser>().ToTable("users");
+        builder.Entity<IdentityRole<int>>().ToTable("roles");
+        builder.Entity<IdentityUserRole<int>>().ToTable("user_roles");
+        builder.Entity<IdentityUserClaim<int>>().ToTable("user_claims");
+        builder.Entity<IdentityUserLogin<int>>().ToTable("user_logins");
+        builder.Entity<IdentityUserToken<int>>().ToTable("user_tokens");
+        builder.Entity<IdentityRoleClaim<int>>().ToTable("role_claims");
+
+        // Renaming Identity columns to match the DB schema
         builder.Entity<ApplicationUser>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("id");
@@ -105,38 +123,64 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
         });
 
-        // Перейменування колонок для інших таблиць
         ConfigureTableNames(builder);
     }
 
+    // Setting up table names
     private void ConfigureTableNames(ModelBuilder builder)
     {
         builder.Entity<Universe>().ToTable("universes");
         builder.Entity<Category>().ToTable("categories");
         builder.Entity<Product>().ToTable("products");
+        builder.Entity<ProductTranslation>().ToTable("product_translations");
+        builder.Entity<CategoryTranslation>().ToTable("category_translations");
+        builder.Entity<UniverseTranslation>().ToTable("universe_translations");
+        builder.Entity<Language>().ToTable("languages");
         builder.Entity<ProductSize>().ToTable("product_sizes");
         builder.Entity<Order>().ToTable("orders");
         builder.Entity<OrderItem>().ToTable("order_items");
         builder.Entity<Favorite>().ToTable("favorites");
 
-        // Налаштування назв колонок для відповідності схемі БД
         ConfigureColumnNames(builder);
     }
 
+    // Setting up column names
     private void ConfigureColumnNames(ModelBuilder builder)
     {
+        builder.Entity<Language>(entity =>
+        {
+            entity.Property(e => e.Code).HasColumnName("code");
+            entity.Property(e => e.Name).HasColumnName("name");
+        });
+        
         // Universe
         builder.Entity<Universe>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.Description).HasColumnName("description");
         });
 
         // Category
         builder.Entity<Category>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("id");
+        });
+
+        // CategoryTranslation
+        builder.Entity<CategoryTranslation>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.LanguageCode).HasColumnName("language_code");
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Description).HasColumnName("description");
+        });
+
+        // UniverseTranslation
+        builder.Entity<UniverseTranslation>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.UniverseId).HasColumnName("universe_id");
+            entity.Property(e => e.LanguageCode).HasColumnName("language_code");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Description).HasColumnName("description");
         });
@@ -147,11 +191,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.UniverseId).HasColumnName("universe_id");
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.Price).HasColumnName("price");
+            entity.Property(e => e.Stock).HasColumnName("stock");
+        });
+
+        // ProductTranslation
+        builder.Entity<ProductTranslation>(entity =>
+        {
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.LanguageCode).HasColumnName("language_code");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.ShortDescription).HasColumnName("short_description");
             entity.Property(e => e.FullDescription).HasColumnName("full_description");
-            entity.Property(e => e.Price).HasColumnName("price");
-            entity.Property(e => e.Stock).HasColumnName("stock");
         });
 
         // ProductSize

@@ -24,7 +24,7 @@ public class Product
     // All navigation properties with virtual
 
     public virtual ICollection<ProductTranslation> Translations { get; set; } = new List<ProductTranslation>();
-    public Universe Universe { get; set; } = null!;
+    public Universe Universe { get; set; } = null!;   
     public Category Category { get; set; } = null!;
     public ICollection<ProductSize> ProductSizes { get; set; } = new List<ProductSize>();
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
