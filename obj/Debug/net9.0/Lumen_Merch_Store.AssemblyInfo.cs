@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Lumen_Merch_Store")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c3e4c8b208e451059dac504993cc641390a3846")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e97098e02df17ef4fcecf7d281d4dd87df41228c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Lumen_Merch_Store")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Lumen_Merch_Store")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

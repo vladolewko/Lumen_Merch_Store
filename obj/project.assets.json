@@ -3000,24 +3000,25 @@
     ]
   },
   "packageFolders": {
-    "/Users/sasha/.nuget/packages/": {}
+    "/Users/hesoyam/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/sasha/Documents/KHNU/web_technologies/Lumen_Merch_Store/Lumen_Merch_Store.csproj",
+      "projectUniqueName": "/Users/hesoyam/RiderProjects/Lumen_Merch_Store/Lumen_Merch_Store.csproj",
       "projectName": "Lumen_Merch_Store",
-      "projectPath": "/Users/sasha/Documents/KHNU/web_technologies/Lumen_Merch_Store/Lumen_Merch_Store.csproj",
-      "packagesPath": "/Users/sasha/.nuget/packages/",
-      "outputPath": "/Users/sasha/Documents/KHNU/web_technologies/Lumen_Merch_Store/obj/",
+      "projectPath": "/Users/hesoyam/RiderProjects/Lumen_Merch_Store/Lumen_Merch_Store.csproj",
+      "packagesPath": "/Users/hesoyam/.nuget/packages/",
+      "outputPath": "/Users/hesoyam/RiderProjects/Lumen_Merch_Store/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/sasha/.nuget/NuGet/NuGet.Config"
+        "/Users/hesoyam/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "/opt/homebrew/Cellar/dotnet/9.0.8/libexec/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3036,7 +3037,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net9.0": {
@@ -3082,7 +3083,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/opt/homebrew/Cellar/dotnet/9.0.8/libexec/sdk/9.0.109/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
