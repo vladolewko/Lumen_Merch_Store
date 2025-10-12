@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Manage Products";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="text-right mb-4">
+    <a asp-action="Create" class="btn btn-primary">Add New Product</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- This is a placeholder. Loop through products from your model here -->
+    <tr>
+        <td>Cyberpunk Hoodie</td>
+        <td>Clothing</td>
+        <td>$69.99</td>
+        <td>50</td>
+        <td>
+            <a asp-action="Edit" asp-route-id="1">Edit</a> | 
+            <a asp-action="Delete" asp-route-id="1">Delete</a>
+        </td>
+    </tr>
+    <tr>
+        <td>Lightsaber Replica</td>
+        <td>Replicas</td>
+        <td>$249.99</td>
+        <td>15</td>
+        <td>
+            <a asp-action="Edit" asp-route-id="2">Edit</a> | 
+            <a asp-action="Delete" asp-route-id="2">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
