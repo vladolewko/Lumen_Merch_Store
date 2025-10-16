@@ -1,0 +1,26 @@
+// General form styles for admin area
+.admin-main-content .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.admin-main-content label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.admin-main-content .form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: var(--surface-color);
+  color: var(--text-light);
+  font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.3);
+  }
+}

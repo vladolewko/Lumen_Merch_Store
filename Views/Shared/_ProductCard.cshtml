@@ -1,0 +1,18 @@
+@* In a real app add this at the top:
+    @model Product 
+*@
+
+<div class="product-card">
+    @* Use Model properties like @Model.ImageUrl *@
+    <img src="https://placehold.co/400x500/1E1E1E/FACC15.png?text=Product" alt="Product Name">
+    <div class="product-card-actions">
+        <button aria-label="Add to Wishlist">♡</button>
+    </div>
+    <div class="product-card-info">
+        @* Use Model properties like @Model.Name *@
+        <h3 class="product-card-title">Cyberpunk Hoodie</h3>
+        <p class="product-card-source">From *Cyberpunk 2077*</p>
+        @* Use Model properties like @Model.Price.ToString("C") *@
+        <p class="product-card-price">$69.99</p>
+    </div>
+</div>

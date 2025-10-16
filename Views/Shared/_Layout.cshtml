@@ -1,75 +1,57 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Lumen_Merch_Store</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet"
-        href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet"
-        href="~/css/site.css"
-        asp-append-version="true"/>
-    <link rel="stylesheet"
-        href="~/Lumen_Merch_Store.styles.css"
-        asp-append-version="true"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lumen Store</title>
+    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/lumen-styles.css" />
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand"
-                asp-area=""
-                asp-controller="Home"
-                asp-action="Index">Lumen_Merch_Store</a>
-            <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target=".navbar-collapse"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                            asp-area=""
-                            asp-controller="Home"
-                            asp-action="Index">Головна</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark"
-                            asp-area=""
-                            asp-controller="Home"
-                            asp-action="Privacy">Політика конфіденційності</a>
-                    </li>
-                </ul>
-                <partial name="_LoginPartial"/>
-            </div>
-        </div>
-    </nav>
-</header>
-<div class="container">
-    <main role="main"
-        class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+    <header class="main-header">
+        <nav class="container main-nav">
+            <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">LUMEN</a>
+            
+            <ul class="nav-menu">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Main</a></li>
+                <li><a asp-area="" @*asp-controller="Store" asp-action="Index"*@>Catalogue</a></li>
+                <li><a asp-area="" @*asp-controller="Home" asp-action="About"*@>About Us</a></li>
+            </ul>
 
-<footer class="border-top footer text-muted">
+            <div class="nav-actions">
+                <div class="language-selector">
+                    <select name="language" id="language-select">
+                        <option value="en">EN</option>
+                        <option value="uk">UK</option>
+                    </select>
+                </div>
+                <div class="nav-icons">
+                    <a href="#" aria-label="Profile">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    </a>
+                    <a href="#" aria-label="Wishlist">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+                    </a>
+                    <a href="#" aria-label="Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.658-.463 1.243-1.117 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.117 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
     <div class="container">
-        &copy; 2025 - Lumen_Merch_Store - <a asp-area=""
-            asp-controller="Home"
-            asp-action="Privacy">Privacy</a>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-</footer>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js"
-    asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", false)
+
+    <footer class="main-footer">
+        <!-- Footer content will go here -->
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

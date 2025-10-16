@@ -1,13 +1,33 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    // In a real app, you would pass a list of Product models from your controller
 }
 
-<div style="margin-top: 100px; background-color: lightgray; padding: 20px; border-radius: 20px; border: gray 2px solid;" class="text-center">
-    <h1 class="display-4">Merch web-store <i>"Lumen"</i></h1>
-    <h2>Our team:</h2>
-    <h4><i>Oleshko Vladyslav</i></h4>
-    <h4><i>Oleksandr Cheshun</i></h4>
-    <h4><i>Karina Matviychuk</i></h4>
-    <p class="mb-0">Khmelnytsy National University</p>
-    <p>Group SE-23-1</p>
-</div>
+<!-- ======================= HERO SECTION ======================= -->
+<section class="hero" style="background-image: url('/images/hero-bg.jpg');">
+    <div class="hero-content">
+        <h1>Illuminate Your Passion</h1>
+        <p>Curated merch that brings your favorite universes to light.</p>
+        <a href="#" class="btn btn-primary">Shop New Arrivals</a>
+    </div>
+</section>
+
+<!-- ======================= BESTSELLERS ======================= -->
+<section class="section container">
+    <h2>Fan Favorites: Our Bestsellers</h2>
+    <div class="product-grid">
+        @* In a real application loop through your product models here.
+            For example:
+            @foreach (var product in Model.Bestsellers)
+            {
+                <partial name="_ProductCard" model="product" />
+            }
+            For now, we will just render the partial with dummy data.
+        *@
+        
+        <partial name="_ProductCard" />
+        <partial name="_ProductCard" />
+        <partial name="_ProductCard" />
+        <partial name="_ProductCard" />
+    </div>
+</section>

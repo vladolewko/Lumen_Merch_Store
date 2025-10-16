@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lumen Admin</title>
+    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap)" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/lumen-styles.css" />
+</head>
+<body class="admin-body">
+<div class="admin-wrapper">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">LUMEN</a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                <li><a asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a></li>
+                @* <li><a asp-area="Admin" asp-controller="Orders" asp-action="Index">Orders</a></li> *@
+                @* <li><a asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a></li> *@
+                @* <li><a asp-area="Admin" asp-controller="Universes" asp-action="Index">Universes</a></li> *@
+            </ul>
+        </nav>
+    </aside>
+    <main class="admin-main-content">
+        <header class="content-header">
+            <h1>@ViewData["Title"]</h1>
+            <!-- You can add user profile links here -->
+        </header>
+        <div class="content-body">
+            @RenderBody()
+        </div>
+    </main>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

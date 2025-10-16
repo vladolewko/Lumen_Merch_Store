@@ -1,0 +1,25 @@
+{
+    "name"           : "lumen_merch_store",
+    "version"        : "1.0.0",
+    "description"    : "ASP.NET Core web-store with MySQL DB.",
+    "main"           : "index.js",
+    "scripts"        : {
+        "build:css": "sass Styles/main.scss:wwwroot/css/lumen-styles.css --style=compressed",
+        "watch:css": "sass --watch Styles/main.scss:wwwroot/css/lumen-styles.css"
+    },
+    "repository"     : {
+        "type": "git",
+        "url" : "git+https://github.com/vladolewko/Lumen_Merch_Store.git"
+    },
+    "keywords"       : [],
+    "author"         : "",
+    "license"        : "ISC",
+    "bugs"           : {
+        "url": "https://github.com/vladolewko/Lumen_Merch_Store/issues"
+    },
+    "homepage"       : "https://github.com/vladolewko/Lumen_Merch_Store#readme",
+    "devDependencies": {
+        "sass": "^1.93.2"
+    }
+}
+
