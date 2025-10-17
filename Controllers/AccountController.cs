@@ -1,5 +1,6 @@
 using Lumen_Merch_Store.Models;
 using Lumen_Merch_Store.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,9 @@ public class AccountController : Controller
         return View();
     }
 
+    // У Lumen_Merch_Store.Controllers;
+// ... (Ваш AccountController)
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
@@ -41,19 +45,24 @@ public class AccountController : Controller
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
+                var user = await _userManager.FindByEmailAsync(model.Email);
+            
+                if (user != null)
+                {
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Dashboard", "Admin"); 
+                    }
+                }
                 return RedirectToLocal(returnUrl);
             }
-
             if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");
                 return RedirectToAction(nameof(Lockout));
             }
-
             ModelState.AddModelError(string.Empty, "Невірні дані для входу.");
-            return View(model);
         }
-
         return View(model);
     }
 
@@ -98,6 +107,29 @@ public class AccountController : Controller
         }
 
         return View(model);
+    }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Profile()
+    {
+        var user = await _userManager.GetUserAsync(User);
+    
+        if (user == null)
+        {
+            return NotFound($"Неможливо завантажити користувача.");
+        }
+
+        var model = new ProfileViewModel
+        {
+            Email = user.Email ?? string.Empty,
+            Name = user.Name,
+            Phone = user.PhoneNumber,
+            PhotoUrl = user.PhotoUrl,
+            CreatedAt = user.CreatedAt
+        };
+
+        return View(model); 
     }
 
     [HttpPost]
