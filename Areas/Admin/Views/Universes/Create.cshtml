@@ -1,5 +1,10 @@
 @model Lumen_Merch_Store.Areas.Admin.ViewModels.UniverseViewModel
 
+@{
+    ViewData["Title"] = "Створення Всесвіту";
+    Layout = "~/Areas/Admin/Views/_Shared/_AdminLayout.cshtml";
+}
+
 <div class="admin-main-content">
     <h2>Створення Всесвіту</h2>
 
@@ -42,9 +47,3 @@
         </div>
     </form>
 </div>
-
-@* @section Scripts { *@
-@*     @{ *@
-@*         await Html.RenderPartialAsync("_ValidationScriptsPartial"); *@
-@*     } *@
-@* } *@

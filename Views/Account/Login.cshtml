@@ -1,62 +1,53 @@
 @model Lumen_Merch_Store.ViewModels.LoginViewModel
+
 @{
     ViewData["Title"] = "Вхід";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h2>Вхід до системи</h2>
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-identity">
+                <h2 class="profile-name">@ViewData["Title"]</h2>
+                <p class="profile-email">Увійдіть в свій акаунт</p>
             </div>
-            <div class="card-body">
-                <form asp-action="Login"
-                    method="post">
-                    <div asp-validation-summary="ModelOnly"
-                        class="text-danger"></div>
- 
-                    <div class="form-group mb-3">
-                        <label asp-for="Email"
-                            class="form-label"></label>
-                        <input asp-for="Email"
-                            class="form-control"/>
-                        <span asp-validation-for="Email"
-                            class="text-danger"></span>
+        </div>
+        
+        <div class="profile-body p-0">
+            <form method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="details-list">
+                    <div class="form-group mb-4">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" autocomplete="email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
-
-                    <div class="form-group mb-3">
-                        <label asp-for="Password"
-                            class="form-label"></label>
-                        <input asp-for="Password"
-                            class="form-control"/>
-                        <span asp-validation-for="Password"
-                            class="text-danger"></span>
+                    
+                    <div class="form-group mb-4">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-
-                    <div class="form-check mb-3">
-                        <input asp-for="RememberMe"
-                            class="form-check-input"/>
-                        <label asp-for="RememberMe"
-                            class="form-check-label"></label>
-                    </div>
-
+                    
                     <div class="form-group">
-                        <input type="submit"
-                            value="Увійти"
-                            class="btn btn-primary"/>
+                        <div class="form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label"></label>
+                        </div>
                     </div>
-                </form>
-
-                <hr/>
-                <p>
-                    <a asp-action="Register"
-                        asp-route-returnurl="@ViewData["ReturnUrl"]">Зареєструватися як новий користувач</a>
-                </p>
-            </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <button type="submit" class="btn btn-primary">Увійти</button>
+                    <a asp-action="Register" class="btn btn-secondary">Зареєструватися</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <partial name="_ValidationScriptsPartial" />
 }

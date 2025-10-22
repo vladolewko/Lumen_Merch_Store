@@ -176,12 +176,14 @@ img {
   display: inline-block;
   padding: 0.8rem 2rem;
   border-radius: 50px;
-  font-family: var(--font-heading);
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  border: none;
+  text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
 .btn-primary {
@@ -191,6 +193,15 @@ img {
 .btn-primary:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--primary-accent);
+  color: var(--primary-accent);
+}
+.btn-secondary:hover {
+  background-color: rgba(250, 204, 21, 0.1);
 }
 
 .product-grid {
@@ -251,6 +262,81 @@ img {
   padding: 0.5rem;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.profile-body {
+  padding: 0;
+}
+.profile-body form {
+  padding: 2rem;
+}
+
+form .form-group {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 1rem;
+  align-items: start;
+  position: relative;
+}
+form .form-group.text-center {
+  display: block;
+}
+form .form-group .form-label {
+  padding-top: 0.75rem;
+  color: var(--text-light);
+  font-weight: 500;
+  font-family: var(--font-heading);
+}
+form .form-group .text-danger {
+  grid-column: 2;
+  position: absolute;
+  bottom: -1.25rem;
+}
+form .form-control {
+  background-color: var(--surface-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+form .form-control:focus {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.2);
+  outline: none;
+}
+form .text-danger {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+form .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  grid-column: 2;
+}
+form .form-check .form-check-input {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--surface-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+form .form-check .form-check-input:checked {
+  background-color: var(--primary-accent);
+  border-color: var(--primary-accent);
+}
+form .form-check .form-check-label {
+  color: var(--text-light);
+  cursor: pointer;
+  user-select: none;
+}
+form .profile-actions {
+  margin: 2rem -2rem -2rem -2rem;
+  padding: 1.5rem 2rem;
 }
 
 .admin-body {
@@ -378,9 +464,117 @@ img {
   color: var(--text-light);
 }
 
+main {
+  min-height: 83vh;
+}
+
 .section {
   padding: 6rem 0;
   text-align: center;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 700px;
+  background-color: var(--surface-color);
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.5rem;
+  background-color: #242424;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+}
+.profile-avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-accent);
+}
+.profile-avatar svg {
+  width: 100px;
+  height: 100px;
+  color: var(--text-light);
+  background-color: #333;
+  border-radius: 50%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.profile-identity .profile-name {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  color: var(--text-white);
+  margin: 0;
+}
+.profile-identity .profile-email {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.profile-body {
+  padding: 2.5rem;
+}
+.profile-body .details-title {
+  font-family: "Montserrat", sans-serif;
+  color: var(--primary-accent);
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--primary-accent);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.profile-body .details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.profile-body .details-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #333;
+}
+.profile-body .details-list li:last-child {
+  border-bottom: none;
+}
+.profile-body .details-list li span {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+.profile-body .details-list li strong {
+  color: var(--text-white);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.profile-actions {
+  padding: 1.5rem 2.5rem;
+  background-color: #242424;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /*# sourceMappingURL=lumen-styles.css.map */

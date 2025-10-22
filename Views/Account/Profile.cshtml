@@ -1,48 +1,50 @@
 @model Lumen_Merch_Store.ViewModels.ProfileViewModel
 @{
-    ViewData["Title"] = "Профіль";
+    ViewData["Title"] = "Мій Профіль";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h2>Ваш профіль</h2>
+<div class="profile-container">
+    <div class="profile-card">
+        
+        <div class="profile-header">
+            <div class="profile-avatar">
+                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <img src="@Model.PhotoUrl" alt="Фото профілю">
+                }
+                else
+                {
+                    <svg class="profile-avatar-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                }
             </div>
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    @if (!string.IsNullOrEmpty(Model.PhotoUrl))
-                    {
-                        <img src="@Model.PhotoUrl" class="rounded-circle" alt="Фото профілю" style="width: 100px; height: 100px; object-fit: cover;">
-                    }
-                    else
-                    {
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 100px; height: 100px;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    }
-                </div>
-                
-                <dl class="row">
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+            <div class="profile-identity">
+                <h2 class="profile-name">@Html.DisplayFor(model => model.Name)</h2>
+                <p class="profile-email">@Html.DisplayFor(model => model.Email)</p>
+            </div>
+        </div>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
-                    
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Phone)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Phone)</dd>
-                    
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
-                    <dd class="col-sm-8">@Model.CreatedAt.ToShortDateString()</dd>
-                </dl>
-                
-                <hr/>
-                
-                <form asp-action="Logout" method="post">
-                    <button type="submit" class="btn btn-danger w-100">Вийти</button>
-                </form>
-            </div>
+        <div class="profile-body">
+            <h3 class="details-title">Ваша інформація</h3>
+            <ul class="details-list">
+                <li>
+                    <span>@Html.DisplayNameFor(model => model.Phone)</span>
+                    <strong>@Html.DisplayFor(model => model.Phone)</strong>
+                </li>
+                <li>
+                    <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                    <strong>@Model.CreatedAt.ToShortDateString()</strong>
+                </li>
+            </ul>
+        </div>
+
+        <div class="profile-actions">
+            <a asp-action="Edit" class="btn btn-primary">Редагувати профіль</a>
+            <form asp-action="Logout" method="post" class="d-inline">
+                <button type="submit" class="btn btn-secondary">Вийти</button>
+            </form>
         </div>
     </div>
 </div>
