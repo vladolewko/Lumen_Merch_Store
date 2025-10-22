@@ -68,9 +68,24 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// ==========================================================
+// ВИКОРИСТАННЯ ТОП-РІВНЕВОЇ РЕЄСТРАЦІЇ МАРШРУТІВ
+// ==========================================================
+
+// 1. МАРШРУТ ДЛЯ ОБЛАСТЕЙ (Areas Route) - ПОВИНЕН БУТИ ПЕРШИМ
 app.MapControllerRoute(
-    "default",
-    "{controller=Home}/{action=Index}/{id?}");
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
+);
+
+// 2. МАРШРУТ ЗА ЗАМОВЧУВАННЯМ (Default Route)
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+
+// ==========================================================
+
 
 // Створення ролей за замовчуванням
 using (var scope = app.Services.CreateScope())

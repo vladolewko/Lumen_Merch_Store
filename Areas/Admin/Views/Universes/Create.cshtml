@@ -1,0 +1,50 @@
+@model Lumen_Merch_Store.Areas.Admin.ViewModels.UniverseViewModel
+
+<div class="admin-main-content">
+    <h2>Створення Всесвіту</h2>
+
+    <form asp-action="Create" method="post" class="mt-4">
+        <div asp-validation-summary="ModelOnly" class="text-red-500 mb-4"></div>
+
+        <h3 class="font-bold text-xl mb-3" style="color: #FACC15;">Українська Інформація</h3>
+        
+        <div class="form-group">
+            <label asp-for="NameUk"></label>
+            <input asp-for="NameUk" class="form-control" />
+            <span asp-validation-for="NameUk" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DescriptionUk"></label>
+            <textarea asp-for="DescriptionUk" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="DescriptionUk" class="text-red-500 text-sm"></span>
+        </div>
+        
+        <h3 class="font-bold text-xl mb-3 mt-8" style="color: #FACC15;">Англійська Інформація</h3>
+        
+        <div class="form-group">
+            <label asp-for="NameEn"></label>
+            <input asp-for="NameEn" class="form-control" />
+            <span asp-validation-for="NameEn" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DescriptionEn"></label>
+            <textarea asp-for="DescriptionEn" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="DescriptionEn" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div class="mt-8 flex justify-end gap-3">
+            <a asp-action="Index" class="btn">Скасувати</a>
+            <button type="submit" class="btn btn-primary">
+                Зберегти Всесвіт
+            </button>
+        </div>
+    </form>
+</div>
+
+@* @section Scripts { *@
+@*     @{ *@
+@*         await Html.RenderPartialAsync("_ValidationScriptsPartial"); *@
+@*     } *@
+@* } *@

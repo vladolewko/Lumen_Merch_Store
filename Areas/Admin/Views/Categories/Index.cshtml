@@ -1,19 +1,16 @@
-@model IEnumerable<Lumen_Merch_Store.Areas.Admin.ViewModels.ProductViewModel>
+@model IEnumerable<Lumen_Merch_Store.Areas.Admin.ViewModels.CategoryViewModel>
 
 @{
-    ViewData["Title"] = "Управління Продуктами";
+    ViewData["Title"] = "Управління Категоріями";
     Layout = "~/Areas/Admin/Views/_Shared/_AdminLayout.cshtml";
 }
 
 <div class="text-right mb-4">
     <a asp-action="Create" class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor"
-             style="width: 1rem; height: 1rem; vertical-align: middle;">
-            <path fill-rule="evenodd"
-                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                  clip-rule="evenodd"/>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor" style="width: 1rem; height: 1rem; vertical-align: middle;">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
-        Створити Новий Продукт
+        Створити Нову Категорію
     </a>
 </div>
 
@@ -23,8 +20,7 @@
         <tr>
             <th>ID</th>
             <th>Назва (УКР)</th>
-            <th>Ціна</th>
-            <th>Запас</th>
+            <th>Опис (УКР)</th>
             <th>Дії</th>
         </tr>
         </thead>
@@ -39,18 +35,14 @@
                     @Html.DisplayFor(modelItem => item.NameUk)
                 </td>
                 <td>
-                    @item.Price.ToString("C")
+                    @Html.DisplayFor(modelItem => item.DescriptionUk)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Stock)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" style="color: #4F46E5;">Деталі</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" style="color: #4F46E5;">Деталі</a> | 
                     <a asp-action="Edit" asp-route-id="@item.Id" style="color: #FACC15;">Редагувати</a> |
                     <form asp-action="Delete" method="post">
                         <button type="submit" name="id" value="@item.Id">
-                            видалити
-                        </button>
+                            видалити</button>
                     </form>
                 </td>
             </tr>

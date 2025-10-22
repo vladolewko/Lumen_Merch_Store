@@ -62,3 +62,6 @@ artifacts/
 
 # Node.js
 node_modules/
+
+# Configuration files
+appsettings.json
