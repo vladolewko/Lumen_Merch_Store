@@ -145,6 +145,86 @@ public class AccountController : Controller
         return View();
     }
 
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Edit()
+    {
+        var user = await _userManager.GetUserAsync(User);
+    
+        if (user == null)
+        {
+            return NotFound($"Неможливо завантажити користувача.");
+        }
+
+        var model = new EditProfileViewModel
+        {
+            Email = user.Email ?? string.Empty,
+            Name = user.Name,
+            Phone = user.PhoneNumber,
+            PhotoUrl = user.PhotoUrl
+        };
+
+        return View(model);
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(EditProfileViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+        {
+            return NotFound($"Неможливо завантажити користувача.");
+        }
+
+        var existingUser = await _userManager.FindByEmailAsync(model.Email);
+        if (existingUser != null && existingUser.Id != user.Id)
+        {
+            ModelState.AddModelError("Email", "Цей email вже використовується.");
+            return View(model);
+        }
+
+        user.Name = model.Name;
+        user.Email = model.Email;
+        user.UserName = model.Email;
+        user.PhoneNumber = model.Phone;
+
+        if (model.PhotoFile != null)
+        {
+            var uploadsFolder = Path.Combine("wwwroot", "images", "profiles");
+            Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = Guid.NewGuid() + "_" + model.PhotoFile.FileName;
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.PhotoFile.CopyToAsync(fileStream);
+            }
+
+            user.PhotoUrl = "/images/profiles/" + uniqueFileName;
+        }
+
+        var result = await _userManager.UpdateAsync(user);
+        
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("User profile updated successfully.");
+            return RedirectToAction(nameof(Profile));
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        return View(model);
+    }
+
     private IActionResult RedirectToLocal(string? returnUrl)
     {
         if (Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
