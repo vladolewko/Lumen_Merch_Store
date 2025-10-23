@@ -1,0 +1,83 @@
+@model Lumen_Merch_Store.Models.Product
+@{
+    var translation = Model.Translations.FirstOrDefault();
+    ViewData["Title"] = translation?.Name ?? "Продукт"; // Динамічний заголовок
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="product-detail-container">
+    
+    <!-- ГАЛЕРЕЯ ЗОБРАЖЕНЬ -->
+    <div class="product-gallery">
+        @* <div class="main-image"> *@
+        @*     <img src="@Model.ImageUrl" alt="@Model.Translation.Name"> *@
+        @* </div> *@
+        @* *@
+        @* <!-- (Опціонально) Додаткові зображення-мініатюри --> *@
+        @* @if (Model.GalleryImages != null && Model.GalleryImages.Any()) *@
+        @* { *@
+        @*     <div class="thumbnail-images"> *@
+        @*         <!-- Перша мініатюра - це головне зображення --> *@
+        @*         <img src="@Model.ImageUrl" alt="Мініатюра 1" class="active"> *@
+        @*          *@
+        @*         <!-- Інші зображення з галереї --> *@
+        @*         @foreach (var imageUrl in Model.GalleryImages) *@
+        @*         { *@
+        @*             <img src="@imageUrl" alt="Мініатюра"> *@
+        @*         } *@
+        @*     </div> *@
+        @* } *@
+        
+        <img src="https://placehold.co/400x500/1E1E1E/FACC15.png?text=Product" alt="Product Name">
+    </div>
+    
+    <!-- ІНФОРМАЦІЯ ПРО ПРОДУКТ -->
+    <div class="product-info">
+        <span class="product-universe">Із @(Model.Universe.Translations.FirstOrDefault()?.Name ?? "Всесвіту")</span>
+        <h1 class="product-title">@(translation?.Name ?? "Назва продукту")</h1>
+        <!-- Форматуємо ціну, щоб вона завжди мала 2 знаки після коми, напр. 1200.00 ₴ -->
+        <p class="product-price">@Model.Price.ToString("F2") ₴</p>
+
+        <p class="product-description">
+            @(translation?.FullDescription ?? "")
+        </p>
+        
+        <div class="product-options">
+            <!-- Вибір розміру (динамічно) -->
+            @if (Model.ProductSizes != null && Model.ProductSizes.Any())
+            {
+                <div class="form-group">
+                    <label for="size-select">Розмір:</label>
+                    <select id="size-select" class="form-select">
+                        @foreach (var size in Model.ProductSizes)
+                        {
+                            <option value="@size.Id">@size.Size</option>
+                        }
+                    </select>
+                </div>
+            }
+            
+            <!-- Вибір кількості (залишається як є, керується JS) -->
+            <div class="form-group">
+                <label for="quantity-input">Кількість:</label>
+                <div class="quantity-selector">
+                    <button class="btn-quantity" type="button" aria-label="Зменшити кількість">-</button>
+                    <input type="text" id="quantity-input" value="1" readonly>
+                    <button class="btn-quantity" type="button" aria-label="Збільшити кількість">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-actions">
+            <!-- Додаємо data-product-id, щоб JavaScript міг його отримати -->
+            <button class="btn btn-primary btn-add-to-cart" data-product-id="@Model.Id">Додати в кошик</button>
+            <button class="btn btn-secondary" aria-label="Додати до обраного" data-product-id="@Model.Id">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+                Додати до обраного
+            </button>
+        </div>
+    </div>
+</div>
+

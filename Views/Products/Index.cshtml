@@ -1,0 +1,78 @@
+@model List<Lumen_Merch_Store.Models.Product>
+
+@{
+    ViewData["Title"] = "Каталог";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="catalogue-container">
+    
+    <!-- БІЧНА ПАНЕЛЬ ФІЛЬТРІВ -->
+    <aside class="filter-sidebar">
+        <div class="filter-section">
+            <h3 class="filter-title">Категорії</h3>
+            <ul class="filter-list">
+                <li><a href="#">Всі</a></li>
+                <li><a href="#">Одяг</a></li>
+                <li><a href="#">Фігурки</a></li>
+                <li><a href="#">Постери</a></li>
+                <li><a href="#">Аксесуари</a></li>
+            </ul>
+        </div>
+        
+        <div class="filter-section">
+            <h3 class="filter-title">Всесвіти</h3>
+            <ul class="filter-list">
+                <li><a href="#">Star Wars</a></li>
+                <li><a href="#">Marvel</a></li>
+                <li><a href="#">DC Comics</a></li>
+                <li><a href="#">Harry Potter</a></li>
+                <li><a href="#">Cyberpunk 2077</a></li>
+                <li><a href="#">Lord of the Rings</a></li>
+            </ul>
+        </div>
+        
+        <div class="filter-section">
+            <h3 class="filter-title">Ціна</h3>
+            <div class="price-filter">
+                <input type="range" min="0" max="5000" value="0" class="price-slider" id="price-min">
+                <input type="range" min="0" max="5000" value="5000" class="price-slider" id="price-max">
+                <div class="price-values">
+                    <span>Від: <output id="price-min-value">0</output> ₴</span>
+                    <span>До: <output id="price-max-value">5000</output> ₴</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary w-100">Застосувати</button>
+    </aside>
+    
+    <!-- СІТКА ПРОДУКТІВ -->
+    <main class="product-grid-container">
+        <div class="grid-header">
+            <h2>Знайдено 24 товари</h2>
+            <select class="sort-by">
+                <option value="default">Сортувати за</option>
+                <option value="price-asc">Ціна: за зростанням</option>
+                <option value="price-desc">Ціна: за спаданням</option>
+                <option value="newest">За новинками</option>
+            </select>
+        </div>
+        
+        <div class="product-grid">
+            @* @foreach (var product in Model) *@
+            @* { *@
+            @*     <partial name="_ProductCard" model="product" /> *@
+            @* } *@
+            
+            
+            @* <!-- Приклад того, як це буде виглядати (поки що без моделі) --> *@
+            <partial name="_ProductCard" />
+            <partial name="_ProductCard" />
+            <partial name="_ProductCard" />
+            <partial name="_ProductCard" />
+            <partial name="_ProductCard" />
+            <partial name="_ProductCard" />
+        </div>
+    </main>
+</div>

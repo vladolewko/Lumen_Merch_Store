@@ -1,38 +1,41 @@
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  text-align: left;
-  margin-top: 3rem;
-}
-.product-card {
-  background-color: var(--surface-color);
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    .product-card-actions { opacity: 1; }
+.section {
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    text-align: left;
+    margin-top: 3rem;
   }
 }
-.product-card-info { padding: 1.5rem; }
-.product-card-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
-.product-card-source { color: #aaa; margin-bottom: 1rem; font-size: 0.9rem; }
-.product-card-price { font-size: 1.3rem; font-weight: 700; color: var(--primary-accent); }
-.product-card-actions {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  button {
-    background: rgba(18, 18, 18, 0.7);
-    border: none;
-    color: white;
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
+  
+  .product-card {
+    background-color: var(--surface-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    &:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      .product-card-actions { opacity: 1; }
+    }
   }
-}
+  .product-card-info { padding: 1.5rem; }
+  .product-card-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .product-card-source { color: #aaa; margin-bottom: 1rem; font-size: 0.9rem; }
+  .product-card-price { font-size: 1.3rem; font-weight: 700; color: var(--primary-accent); }
+  .product-card-actions {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    button {
+      background: rgba(18, 18, 18, 0.7);
+      border: none;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
