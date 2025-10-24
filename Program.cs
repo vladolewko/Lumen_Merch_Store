@@ -106,6 +106,29 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+        // 1. Застосування міграцій (якщо потрібно)
+        await context.Database.MigrateAsync();
+        
+        // 2. Ініціалізація ролей
+        await SeedRoles(roleManager);
+
+        // 3. ІНІЦІАЛІЗАЦІЯ ТЕСТОВИХ ДАНИХ ТОВАРІВ (DbInitializer)
+        await DbInitializer.Initialize(context); // <--- ВИКЛИК DB INITIALIZER ТУТ!
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+    }
+}
 app.Run();
 
 // Метод для створення ролей

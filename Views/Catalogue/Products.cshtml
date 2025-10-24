@@ -1,0 +1,126 @@
+﻿@model Lumen_Merch_Store.ViewModels.ProductsCatalogViewModel
+
+@{
+    ViewData["Title"] = "Каталог Товарів";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    string BuildUrl(int? categoryId = null, int? universeId = null, string sort = null, decimal? minPrice = null, decimal? maxPrice = null, string search = null)
+    {
+        // Додайте це, якщо ви його не додали
+        var culture = System.Globalization.CultureInfo.InvariantCulture;
+
+        var parameters = new Dictionary<string, string?>
+        {
+            {"categoryId", (categoryId == 0 ? null : (categoryId ?? Model.SelectedCategoryId))?.ToString()}, 
+            {"universeId", (universeId == 0 ? null : (universeId ?? Model.SelectedUniverseId))?.ToString()},
+            {"sortOrder", sort ?? Model.CurrentSortOrder},
+            
+            // ВИПРАВЛЕННЯ ТУТ:
+            {"minPrice", (minPrice ?? Model.SelectedMinPrice)?.ToString(culture)}, 
+            {"maxPrice", (maxPrice ?? Model.SelectedMaxPrice)?.ToString(culture)},
+            
+            {"search", search ?? Model.CurrentSearchTerm}
+        }.Where(kv => !string.IsNullOrEmpty(kv.Value) && kv.Value != "0").ToList();
+
+        // Додано Uri.EscapeDataString для безпеки URL
+        var queryString = string.Join("&", parameters.Select(kv => $"{kv.Key}={Uri.EscapeDataString(kv.Value)}"));
+        return $"/Catalogue/Products?{queryString}";
+    }
+}
+
+<div class="catalogue-container">
+    
+    <aside class="filter-sidebar">
+        <form id="filter-form" method="get" action="@Url.Action("Products", "Catalogue")">
+            <input type="hidden" name="sortOrder" value="@Model.CurrentSortOrder" />
+            <input type="hidden" name="search" value="@Model.CurrentSearchTerm" />
+            
+            <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" /> 
+            <input type="hidden" name="universeId" value="@Model.SelectedUniverseId" /> 
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Категорії</h3>
+                <ul class="filter-list">
+                    <li><a href="@BuildUrl(categoryId: 0)" class="@(Model.SelectedCategoryId == null ? "active" : "")">Всі</a></li>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li>
+                            <a href="@BuildUrl(categoryId: category.Id)" class="@(Model.SelectedCategoryId == category.Id ? "active" : "")">
+                                @category.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Всесвіти</h3>
+                <ul class="filter-list">
+                    <li><a href="@BuildUrl(universeId: 0)" class="@(Model.SelectedUniverseId == null ? "active" : "")">Всі</a></li>
+                    @foreach (var universe in Model.Universes)
+                    {
+                        <li>
+                            <a href="@BuildUrl(universeId: universe.Id)" class="@(Model.SelectedUniverseId == universe.Id ? "active" : "")">
+                                @universe.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">Ціна</h3>
+                <div class="price-filter">
+                    <input type="number" name="minPrice" value="@Model.SelectedMinPrice" min="@Model.MinPrice" max="@Model.MaxPrice" placeholder="Від" class="form-control mb-2" />
+                    <input type="number" name="maxPrice" value="@Model.SelectedMaxPrice" min="@Model.MinPrice" max="@Model.MaxPrice" placeholder="До" class="form-control mb-2" />
+                    <div class="price-values">
+                        <span>Min: @Model.MinPrice.ToString("F2") ₴</span>
+                        <span>Max: @Model.MaxPrice.ToString("F2") ₴</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Застосувати фільтри</button>
+        </form>
+    </aside>
+    
+    <main class="product-grid-container">
+        <div class="grid-header">
+            <h2>Знайдено @Model.TotalProductsCount товари(ів)</h2>
+        
+            <form method="get" action="@Url.Action("Products", "Catalogue")">
+                <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" />
+                <input type="hidden" name="universeId" value="@Model.SelectedUniverseId" />
+                <input type="hidden" name="minPrice" value="@Model.SelectedMinPrice" />
+                <input type="hidden" name="maxPrice" value="@Model.SelectedMaxPrice" />
+                <input type="hidden" name="search" value="@Model.CurrentSearchTerm" />
+
+          
+                <select name="sortOrder" class="sort-by" onchange="this.form.submit()">
+    
+                    @{ 
+                        var currentSort = Model.CurrentSortOrder; 
+                    }
+
+                    <option value="default" selected="@(string.IsNullOrEmpty(currentSort) || currentSort == "default")">Сортувати за</option>
+                    <option value="price-asc" selected="@(currentSort == "price-asc")">Ціна: за зростанням</option>
+                    <option value="price-desc" selected="@(currentSort == "price-desc")">Ціна: за спаданням</option>
+                    <option value="newest" selected="@(currentSort == "newest")">За новинками</option>
+                </select>
+            </form>
+        
+        </div>
+    
+        <div class="product-grid">
+            @foreach (var product in Model.Products)
+            {
+                <partial name="_ProductCard" model="product" />
+            }
+        
+            @if (!Model.Products.Any())
+            {
+                <p>Не знайдено товарів за вашим запитом.</p>
+            }
+        </div>
+    </main>
+</div>

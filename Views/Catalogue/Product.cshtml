@@ -1,0 +1,63 @@
+﻿@model Lumen_Merch_Store.ViewModels.ProductDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="product-detail-container">
+    
+    <div class="product-gallery">
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://placehold.co/400x500/1E1E1E/FACC15.png?text=Product" : Model.ImageUrl)" alt="@Model.Name">
+    </div>
+    
+    <div class="product-info">
+        <span class="product-universe">Із @Model.UniverseName</span>
+        <h1 class="product-title">@Model.Name</h1>
+        <p class="product-price">@Model.Price.ToString("F2") ₴</p>
+
+        <p class="product-description">
+            @Html.Raw(Model.FullDescription)
+        </p>
+        
+        <div class="product-options">
+            @if (Model.Sizes != null && Model.Sizes.Any())
+            {
+                <div class="form-group">
+                    <label for="size-select">Розмір:</label>
+                    <select id="size-select" class="form-select">
+                        @foreach (var size in Model.Sizes)
+                        {
+                            var sizeText = size.Stock == 0 ? $"{size.Size} (Немає)" : size.Size;
+                   
+                            @if (size.Stock == 0)
+                            {
+                            <option value="@size.Id" disabled>@sizeText</option>
+                            }
+                            else
+                            {
+                            <option value="@size.Id">@sizeText</option>
+                            }
+                        }
+                    </select>
+                </div>
+            }
+            
+            <div class="form-group">
+                <label for="quantity-input">Кількість:</label>
+                <div class="quantity-selector">
+                    <button class="btn-quantity" type="button" aria-label="Зменшити кількість">-</button>
+                    <input type="text" id="quantity-input" value="1" readonly>
+                    <button class="btn-quantity" type="button" aria-label="Збільшити кількість">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-actions">
+            <button class="btn btn-primary btn-add-to-cart" data-product-id="@Model.Id">Додати в кошик</button>
+            <button class="btn btn-secondary" aria-label="Додати до обраного" data-product-id="@Model.Id">
+                Додати до обраного
+            </button>
+        </div>
+    </div>
+</div>

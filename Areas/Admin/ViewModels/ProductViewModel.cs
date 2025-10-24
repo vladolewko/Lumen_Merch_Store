@@ -22,7 +22,6 @@ public class ProductViewModel
     [Required(ErrorMessage = "Потрібно обрати всесвіт.")]
     public int UniverseId { get; set; }
 
-    // Поля для перекладу (припускаємо, що основна мова - українська 'uk')
     [Required(ErrorMessage = "Назва продукту українською є обов'язковою.")]
     [MaxLength(150)]
     public string NameUk { get; set; } = string.Empty;

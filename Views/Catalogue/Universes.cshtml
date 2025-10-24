@@ -1,0 +1,34 @@
+﻿@model Lumen_Merch_Store.ViewModels.UniverseListViewModel
+
+@{
+    ViewData["Title"] = "Всесвіти";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="menu-list-container">
+    <h2>Всесвіти</h2>
+    
+    <form method="get" action="@Url.Action("Universes", "Catalogue")" class="search-form mb-4">
+        <input type="text" name="search" placeholder="Пошук по всесвітам..." value="@Model.CurrentSearchTerm" class="form-control" />
+        <button type="submit" class="btn btn-info">Знайти</button>
+    </form>
+
+    <div class="row universe-grid">
+        @foreach (var universe in Model.Universes)
+        {
+            <div class="col-md-4 mb-4">
+                <a href="@Url.Action("Products", "Catalogue", new { universeId = universe.Id })" class="card universe-card">
+                    <div class="card-body">
+                        <h5 class="card-title">@universe.Name</h5>
+                        <p class="card-text">Переглянути товари (@(universe.Count ?? 0))</p>
+                    </div>
+                </a>
+            </div>
+        }
+        
+        @if (!Model.Universes.Any())
+        {
+            <p>Всесвіти не знайдено.</p>
+        }
+    </div>
+</div>

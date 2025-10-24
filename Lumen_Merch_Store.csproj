@@ -23,5 +23,9 @@
       <AdditionalFiles Include="Areas\Admin\Views\Categories\Create.cshtml" />
       <AdditionalFiles Include="Areas\Admin\Views\Categories\Index.cshtml" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
 
 </Project>

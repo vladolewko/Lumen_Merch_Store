@@ -20,6 +20,7 @@ public class Product
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+    public string? ImageUrl { get; set; } 
 
     // All navigation properties with virtual
 

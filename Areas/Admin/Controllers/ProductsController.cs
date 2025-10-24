@@ -29,7 +29,6 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
                 Id = p.Id,
                 Price = p.Price,
                 Stock = p.Stock,
-                // Виводимо українську назву або заглушку
                 NameUk = p.Translations.FirstOrDefault()?.Name ?? "Назва відсутня" 
             }).ToList();
 
@@ -122,18 +121,16 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
             {
                 try
                 {
-                    // Отримуємо існуючий продукт разом з перекладами
                     var product = await GetProductWithDetails(id);
                     if (product == null) return NotFound();
 
-                    // Оновлюємо базові поля
                     product.Price = viewModel.Price;
                     product.Stock = viewModel.Stock;
                     product.CategoryId = viewModel.CategoryId;
                     product.UniverseId = viewModel.UniverseId;
                     product.UpdatedAt = DateTime.Now;
 
-                    // Оновлюємо переклад (припускаємо, що існує лише 'uk')
+                    // Оновлюємо переклад 
                     var translation = product.Translations.FirstOrDefault(t => t.LanguageCode == "uk");
                     if (translation != null)
                     {
@@ -141,7 +138,6 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
                         translation.ShortDescription = viewModel.ShortDescriptionUk;
                         translation.FullDescription = viewModel.FullDescriptionUk;
                     }
-                    // Якщо переклад чомусь відсутній, додаємо новий
                     else
                     {
                         product.Translations.Add(new ProductTranslation
@@ -190,8 +186,6 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
-        // --- Приватні допоміжні методи ---
         private Task<Product?> GetProductWithDetails(int id)
         {
             // Отримати продукт, включаючи переклади, Категорію та Всесвіт
