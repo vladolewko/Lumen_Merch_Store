@@ -27,5 +27,65 @@
     <ItemGroup>
       <Folder Include="Migrations\" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Auth.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Auth.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Auth.uk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Auth.uk.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Catalogue.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Catalogue.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Catalogue.uk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Catalogue.uk.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\General.uk.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>General.uk.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\General.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>General.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="Resources\Auth.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Auth.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Auth.uk.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Auth.uk.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Catalogue.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Catalogue.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Catalogue.uk.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Catalogue.uk.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\General.uk.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>General.uk.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\General.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>General.en.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
 
 </Project>

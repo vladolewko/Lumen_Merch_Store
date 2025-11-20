@@ -102,7 +102,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(ut => ut.UniverseId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Renaming Identity tables to match the DB schema
+        // Identity tables 
         builder.Entity<ApplicationUser>().ToTable("users");
         builder.Entity<IdentityRole<int>>().ToTable("roles");
         builder.Entity<IdentityUserRole<int>>().ToTable("user_roles");
@@ -111,7 +111,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<IdentityUserToken<int>>().ToTable("user_tokens");
         builder.Entity<IdentityRoleClaim<int>>().ToTable("role_claims");
 
-        // Renaming Identity columns to match the DB schema
+        // Renaming Identity columns
         builder.Entity<ApplicationUser>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("id");

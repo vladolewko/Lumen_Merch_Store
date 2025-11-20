@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Lumen_Merch_Store.Models;
+using Microsoft.AspNetCore.Localization; // Додано
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lumen_Merch_Store.Controllers;
@@ -13,6 +14,22 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [HttpPost]
+    public IActionResult SetLanguage(string culture, string returnUrl)
+    {
+        Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions 
+            { 
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                IsEssential = true, // <--- ОБОВ'ЯЗКОВО ДОДАЙ ЦЕ
+                SameSite = SameSiteMode.Strict 
+            }
+        );
+
+        return LocalRedirect(returnUrl);
+    }
     public IActionResult Index()
     {
         return View();

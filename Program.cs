@@ -1,44 +1,36 @@
 using Lumen_Merch_Store.Data;
 using Lumen_Merch_Store.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization; // Додано
 using Microsoft.EntityFrameworkCore;
+using System.Globalization; // Додано
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Додавання сервісів до контейнера
+// 1. Налаштування БД
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-// Налаштування Identity
+// 2. Налаштування Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     {
-        // Налаштування паролів
         options.Password.RequireDigit = true;
         options.Password.RequireLowercase = true;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = true;
         options.Password.RequiredLength = 6;
         options.Password.RequiredUniqueChars = 1;
-
-        // Налаштування блокування
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         options.Lockout.MaxFailedAccessAttempts = 5;
-        options.Lockout.AllowedForNewUsers = true;
-
-        // Налаштування користувача
-        options.User.AllowedUserNameCharacters =
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
         options.User.RequireUniqueEmail = true;
-
-        // Налаштування підтвердження email
         options.SignIn.RequireConfirmedEmail = false;
-        options.SignIn.RequireConfirmedPhoneNumber = false;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// Налаштування cookies
+// 3. Налаштування Cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -49,11 +41,29 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-builder.Services.AddControllersWithViews();
+// 4. ДОДАВАННЯ СЕРВІСІВ ЛОКАЛІЗАЦІЇ
+builder.Services.AddLocalization();
+
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(); // Додає підтримку локалізації у Views
 
 var app = builder.Build();
 
-// Налаштування HTTP request pipeline
+// 5. НАЛАШТУВАННЯ MIDDLEWARE ЛОКАЛІЗАЦІЇ
+var supportedCultures = new[]
+{
+    new CultureInfo("uk"),
+    new CultureInfo("en")
+};
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("uk"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
+// Standard Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -68,26 +78,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ==========================================================
-// ВИКОРИСТАННЯ ТОП-РІВНЕВОЇ РЕЄСТРАЦІЇ МАРШРУТІВ
-// ==========================================================
-
-// 1. МАРШРУТ ДЛЯ ОБЛАСТЕЙ (Areas Route) - ПОВИНЕН БУТИ ПЕРШИМ
+// Маршрутизація
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
 );
 
-// 2. МАРШРУТ ЗА ЗАМОВЧУВАННЯМ (Default Route)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"
 );
 
-// ==========================================================
-
-
-// Створення ролей за замовчуванням
+// Ініціалізація БД та Ролей
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -98,6 +100,7 @@ using (var scope = app.Services.CreateScope())
 
         await context.Database.MigrateAsync();
         await SeedRoles(roleManager);
+        await DbInitializer.Initialize(context);
     }
     catch (Exception ex)
     {
@@ -106,39 +109,14 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var context = services.GetRequiredService<ApplicationDbContext>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
-
-        // 1. Застосування міграцій (якщо потрібно)
-        await context.Database.MigrateAsync();
-        
-        // 2. Ініціалізація ролей
-        await SeedRoles(roleManager);
-
-        // 3. ІНІЦІАЛІЗАЦІЯ ТЕСТОВИХ ДАНИХ ТОВАРІВ (DbInitializer)
-        await DbInitializer.Initialize(context); // <--- ВИКЛИК DB INITIALIZER ТУТ!
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
-    }
-}
 app.Run();
 
-// Метод для створення ролей
 async Task SeedRoles(RoleManager<IdentityRole<int>> roleManager)
 {
     string[] roleNames = { "Admin", "User" };
-
     foreach (var roleName in roleNames)
     {
-        var roleExists = await roleManager.RoleExistsAsync(roleName);
-        if (!roleExists) await roleManager.CreateAsync(new IdentityRole<int> { Name = roleName });
+        if (!await roleManager.RoleExistsAsync(roleName)) 
+            await roleManager.CreateAsync(new IdentityRole<int> { Name = roleName });
     }
 }

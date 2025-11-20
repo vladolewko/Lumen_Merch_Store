@@ -1,6 +1,6 @@
 @model Lumen_Merch_Store.ViewModels.ProfileViewModel
 @{
-    ViewData["Title"] = "Мій Профіль";
+    ViewData["Title"] = Auth["Profile"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,7 @@
             <div class="profile-avatar">
                 @if (!string.IsNullOrEmpty(Model.PhotoUrl))
                 {
-                    <img src="@Model.PhotoUrl" alt="Фото профілю">
+                    <img src="@Model.PhotoUrl" alt="@Auth["Photo"]">
                 }
                 else
                 {
@@ -27,23 +27,23 @@
         </div>
 
         <div class="profile-body">
-            <h3 class="details-title">Ваша інформація</h3>
+            <h3 class="details-title">@Auth["YourInfo"]</h3>
             <ul class="details-list">
                 <li>
-                    <span>@Html.DisplayNameFor(model => model.Phone)</span>
+                    <span>@Auth["PhoneNumber"]</span>
                     <strong>@Html.DisplayFor(model => model.Phone)</strong>
                 </li>
                 <li>
-                    <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                    <span>@Auth["CreatedAt"]</span>
                     <strong>@Model.CreatedAt.ToShortDateString()</strong>
                 </li>
             </ul>
         </div>
 
         <div class="profile-actions">
-            <a asp-action="Edit" class="btn btn-primary">Редагувати профіль</a>
+            <a asp-action="Edit" class="btn btn-primary">@Auth["EditProfile"]</a>
             <form asp-action="Logout" method="post" class="d-inline">
-                <button type="submit" class="btn btn-secondary">Вийти</button>
+                <button type="submit" class="btn btn-secondary">@Auth["Logout"]</button>
             </form>
         </div>
     </div>

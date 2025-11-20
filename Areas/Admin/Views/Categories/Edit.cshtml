@@ -1,46 +1,66 @@
 @model Lumen_Merch_Store.Areas.Admin.ViewModels.CategoryViewModel
 
 @{
-    ViewData["Title"] = $"Редагування Категорії: {Model.NameUk}";
+    ViewData["Title"] = Model.Id == 0 ? "Створити Категорію" : "Редагувати Категорію";
     Layout = "~/Areas/Admin/Views/_Shared/_AdminLayout.cshtml";
 }
 
 <div class="admin-main-content">
-    <h2>@ViewData["Title"]</h2>
+    <div class="flex justify-between items-center mb-4">
+        <h2>@ViewData["Title"]</h2>
+    </div>
 
-    <form asp-action="Edit" method="post" class="mt-4">
+    <form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" method="post">
         <div asp-validation-summary="ModelOnly" class="text-red-500 mb-4"></div>
+        <input type="hidden" asp-for="Id" />
         
-        <input type="hidden" asp-for="Id" /> @* Приховане поле для ID *@
+        <div class="bg-gray-800 p-4 rounded mb-4 border border-gray-700">
+            <h3 class="font-bold text-xl mb-3 text-yellow-400">Інформація та Переклади</h3>
+            
+            <ul class="nav nav-tabs mb-3" id="catTab" role="tablist">
+                @for (int i = 0; i < Model.Translations.Count; i++)
+                {
+                    var lang = Model.Translations[i].LanguageCode;
+                    var isActive = i == 0 ? "active" : "";
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @isActive" id="tab-@lang" data-bs-toggle="tab" data-bs-target="#content-@lang" type="button" role="tab">
+                            @lang.ToUpper() @(lang == "uk" ? "🇺🇦" : "🇬🇧")
+                        </button>
+                    </li>
+                }
+            </ul>
 
-        <h3 class="font-bold text-xl mb-3" style="color: #FACC15;">Інформація</h3>
+            <div class="tab-content" id="catTabContent">
+                @for (int i = 0; i < Model.Translations.Count; i++)
+                {
+                    var lang = Model.Translations[i].LanguageCode;
+                    var isActive = i == 0 ? "show active" : "";
 
-        <div class="form-group">
-            <label asp-for="NameUk"></label>
-            <input asp-for="NameUk" class="form-control" />
-            <span asp-validation-for="NameUk" class="text-red-500 text-sm"></span>
+                    <div class="tab-pane fade @isActive" id="content-@lang" role="tabpanel">
+                        <input type="hidden" asp-for="Translations[i].LanguageCode" />
+                        
+                        <div class="form-group mb-3">
+                            <label class="form-label">Назва (@lang.ToUpper())</label>
+                            <input asp-for="Translations[i].Name" class="form-control" placeholder="Назва категорії..." />
+                            <span asp-validation-for="Translations[i].Name" class="text-red-500 text-sm"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Опис (@lang.ToUpper())</label>
+                            <textarea asp-for="Translations[i].Description" class="form-control" rows="3" placeholder="Необов'язковий опис..."></textarea>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="DescriptionUk"></label>
-            <textarea asp-for="DescriptionUk" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="DescriptionUk" class="text-red-500 text-sm"></span>
-        </div>
-
-        <div class="mt-8 flex justify-end gap-3">
-            <a asp-action="Index" class="btn">Скасувати</a>
-            <button type="submit" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor" style="width: 1rem; height: 1rem; vertical-align: middle;">
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-7.586 7.586a1 1 0 000 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h1a1 1 0 100-2H8a1 1 0 000 2h1v5.586l-1.293-1.293z" />
-                </svg>
-                Зберегти Зміни
-            </button>
+        <div class="flex justify-end gap-3">
+            <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+            <button type="submit" class="btn btn-primary">Зберегти</button>
         </div>
     </form>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

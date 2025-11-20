@@ -47,3 +47,7 @@ button.accept-policy {
     white-space : nowrap;
     width       : 100%;
 }
+
+.dropdown {
+    background-color: #000;
+}

@@ -1,8 +1,8 @@
-using Lumen_Merch_Store.Data;
 using Lumen_Merch_Store.Areas.Admin.ViewModels;
+using Lumen_Merch_Store.Data;
+using Lumen_Merch_Store.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Lumen_Merch_Store.Models;
 
 namespace Lumen_Merch_Store.Areas.Admin.Controllers
 {
@@ -10,6 +10,7 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
     public class UniversesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly string[] _supportedCultures = new[] { "uk", "en" };
 
         public UniversesController(ApplicationDbContext context)
         {
@@ -20,162 +21,137 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var items = await _context.Universes
-                .Include(u => u.Translations.Where(t => t.LanguageCode == "uk"))
+                .Include(c => c.Translations.Where(t => t.LanguageCode == "uk"))
                 .ToListAsync();
 
-            var viewModelList = items.Select(u => MapToViewModel(u)).ToList();
-
-            return View(viewModelList);
+            return View(items.Select(c => new UniverseViewModel 
+            { 
+                Id = c.Id, 
+                NameForGrid = c.Translations.FirstOrDefault()?.Name ?? "---" 
+            }));
         }
 
-        // GET: /Admin/Universes/Create
+        // GET: Create
         public IActionResult Create()
         {
-            return View(new UniverseViewModel());
+            var model = new UniverseViewModel();
+            PrepareTranslations(model);
+            return View("Edit", model);
         }
 
-        // POST: /Admin/Universes/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UniverseViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var universe = new Universe
-                {
-                    Translations = new List<UniverseTranslation>
-                    {
-                        // 1. Український переклад
-                        new UniverseTranslation
-                        {
-                            Name = viewModel.NameUk,
-                            Description = viewModel.DescriptionUk,
-                            LanguageCode = "uk"
-                        },
-                        // 2. Англійський переклад
-                        new UniverseTranslation
-                        {
-                            Name = viewModel.NameEn,
-                            Description = viewModel.DescriptionEn,
-                            LanguageCode = "en"
-                        }
-                    }
-                };
-
-                _context.Add(universe);
+                var universe = new Universe();
+                UpdateTranslations(universe, viewModel.Translations);
+                
+                _context.Universes.Add(universe); // Виправлено на Universes
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(viewModel);
+            return View("Edit", viewModel);
         }
 
-        // GET: /Admin/Universes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var universe = await GetItemWithDetails(id.Value);
-
-            if (universe == null) return NotFound();
-
-            return View(MapToViewModel(universe));
-        }
-
-        // GET: /Admin/Universes/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-
-            var universe = await GetItemWithDetails(id.Value);
-
+            
+            // Виправлено: шукаємо у Universes
+            var universe = await _context.Universes
+                .Include(c => c.Translations)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            
             if (universe == null) return NotFound();
 
-            return View(MapToViewModel(universe));
+            // Виправлено: використовуємо UniverseViewModel
+            var model = new UniverseViewModel { Id = universe.Id };
+            PrepareTranslations(model, universe.Translations.ToList());
+            return View(model);
         }
 
-        // POST: /Admin/Universes/Edit/5
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UniverseViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, UniverseViewModel viewModel) // Виправлено тип ViewModel
         {
             if (id != viewModel.Id) return NotFound();
-
+            
             if (ModelState.IsValid)
             {
-                var universe = await GetItemWithDetails(id);
+                // Виправлено: шукаємо у Universes
+                var universe = await _context.Universes
+                    .Include(c => c.Translations)
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                
                 if (universe == null) return NotFound();
 
-                UpsertTranslation(universe, "uk", viewModel.NameUk, viewModel.DescriptionUk);
-                UpsertTranslation(universe, "en", viewModel.NameEn, viewModel.DescriptionEn);
-                
+                UpdateTranslations(universe, viewModel.Translations);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
         }
 
-        private void UpsertTranslation(Universe universe, string languageCode, string name, string? description)
+        // POST: Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // Шукаємо існуючий переклад
-            var translation = universe.Translations.FirstOrDefault(t => t.LanguageCode == languageCode);
-
-            if (translation != null)
-            {
-                // Якщо переклад існує - оновлюємо
-                translation.Name = name;
-                translation.Description = description;
+            var universe = await _context.Universes.FindAsync(id); // Виправлено на Universes
+            if (universe != null) 
+            { 
+                _context.Universes.Remove(universe); 
+                await _context.SaveChangesAsync(); 
             }
-            else
+            return RedirectToAction(nameof(Index));
+        }
+
+        // === ДОПОМІЖНІ МЕТОДИ (Адаптовані під Universe) ===
+
+        private void PrepareTranslations(UniverseViewModel model, List<UniverseTranslation>? dbTranslations = null)
+        {
+            model.Translations = new List<TranslationViewModel>();
+            foreach (var lang in _supportedCultures)
             {
-                // Якщо переклад відсутній - додаємо новий
-                universe.Translations.Add(new UniverseTranslation
+                var existing = dbTranslations?.FirstOrDefault(t => t.LanguageCode == lang);
+                model.Translations.Add(new TranslationViewModel
                 {
-                    Name = name,
-                    Description = description,
-                    LanguageCode = languageCode,
-                    // UniverseId буде встановлено автоматично через навігаційну властивість
+                    LanguageCode = lang,
+                    Name = existing?.Name ?? "",
+                    Description = existing?.Description
                 });
             }
         }
 
-        // POST: /Admin/Universes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        private void UpdateTranslations(Universe universe, List<TranslationViewModel> viewTranslations)
         {
-            var universe = await GetItemWithDetails(id);
-
-            if (universe != null)
+            foreach (var tView in viewTranslations)
             {
-                _context.Universes.Remove(universe);
-                await _context.SaveChangesAsync();
+                var tDb = universe.Translations.FirstOrDefault(t => t.LanguageCode == tView.LanguageCode);
+                
+                if (tDb != null)
+                {
+                    // Оновлюємо існуючий переклад
+                    tDb.Name = tView.Name;
+                    tDb.Description = tView.Description;
+                }
+                else if (!string.IsNullOrWhiteSpace(tView.Name))
+                {
+                    // Додаємо новий переклад
+                    universe.Translations.Add(new UniverseTranslation
+                    {
+                        LanguageCode = tView.LanguageCode,
+                        Name = tView.Name,
+                        Description = tView.Description,
+                        UniverseId = universe.Id // EF Core сам підтягне ID, але можна явно вказати
+                    });
+                }
             }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        private Task<Universe?> GetItemWithDetails(int id)
-        {
-            return _context.Universes
-                .Include(u => u.Translations) 
-                .FirstOrDefaultAsync(m => m.Id == id);
-        }
-        
-        private UniverseViewModel MapToViewModel(Universe universe)
-        {
-            var translationUk = universe.Translations.FirstOrDefault(t => t.LanguageCode == "uk");
-            var translationEn = universe.Translations.FirstOrDefault(t => t.LanguageCode == "en");
-
-            return new UniverseViewModel
-            {
-                Id = universe.Id,
-                // Українська
-                NameUk = translationUk?.Name ?? string.Empty,
-                DescriptionUk = translationUk?.Description,
-                // Англійська
-                NameEn = translationEn?.Name ?? string.Empty,
-                DescriptionEn = translationEn?.Description
-            };
         }
     }
 }

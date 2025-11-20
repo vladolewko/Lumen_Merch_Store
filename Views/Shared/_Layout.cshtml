@@ -1,85 +1,106 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Lumen_Merch_Store.Resources 
+
 @inject SignInManager<ApplicationUser> SignInManager
+@inject IStringLocalizer<General> General
+@inject IStringLocalizer<Catalogue> Catalogue
+
+@{
+    // Отримуємо поточну культуру
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var currentCultureCode = requestCulture?.RequestCulture.UICulture.TwoLetterISOLanguageName ?? "uk";
+
+    // Формуємо URL для повернення
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"{Context.Request.Path.Value}{Context.Request.QueryString}";
+}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@currentCultureCode">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Lumen Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/lumen-styles.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/lumen-styles.css"/>
 </head>
 <body>
-    <header class="main-header">
-        <nav class="container main-nav">
-            <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">LUMEN</a>
+<header class="main-header">
+    <nav class="container main-nav">
+        <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">LUMEN</a>
+
+        <ul class="nav-menu">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">@General["Home"]</a></li>
             
-            <ul class="nav-menu">
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Головна</a></li>
-                
-                <li class="dropdown">
-                    <a asp-area="" asp-controller="Catalogue" asp-action="Products" class="dropdown-toggle" data-toggle="dropdown">
-                        Товари
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a asp-area="" asp-controller="Catalogue" asp-action="Products">Всі Товари (Каталог)</a></li>
-                        <li><a asp-area="" asp-controller="Catalogue" asp-action="Categories">Категорії</a></li>
-                        <li><a asp-area="" asp-controller="Catalogue" asp-action="Universes">Всесвіти</a></li>
-                    </ul>
-                </li>
-                
-                <li><a asp-area="" @*asp-controller="Home" asp-action="About"*@>Про Нас</a></li>
-            </ul>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">@Catalogue["Title"]</a>
+                <ul class="dropdown-menu bg-black">
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Catalogue" asp-action="Products">@Catalogue["All"]</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Catalogue" asp-action="Categories">@Catalogue["FilterTitle_Categories"]</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Catalogue" asp-action="Universes">@Catalogue["FilterTitle_Universes"]</a></li>
+                </ul>
+            </li>
 
-            <div class="nav-actions">
-                <div class="language-selector">
-                    <select name="language" id="language-select">
-                        <option value="en">EN</option>
-                        <option value="uk" selected>UK</option>
+            <li><a asp-area="" asp-controller="Home" asp-action="Privacy">@General["AboutUs"]</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <div class="language-selector">
+                <form id="langForm" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post">
+                    <select name="culture" class="form-select form-select-sm" onchange="this.form.submit();">
+                        @if (currentCultureCode == "en")
+                        {
+                            <option value="en" selected>EN</option>
+                            <option value="uk">UK</option>
+                        }
+                        else
+                        {
+                            <option value="en">EN</option>
+                            <option value="uk" selected>UK</option>
+                        }
                     </select>
-                </div>
-                <div class="nav-icons">
-
-                    @{
-                        var profileUrl = SignInManager.IsSignedIn(User) ? Url.Action("Profile", "Account") : Url.Action("Login", "Account");
-                    }
-
-                    <a href="@profileUrl" aria-label="Profile">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </a>
-                    <a href="#" aria-label="Wishlist">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
-                    </a>
-                    <a href="#" aria-label="Cart">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.658-.463 1.243-1.117 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.117 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg>
-                    </a>
-                    @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <a href="/Admin/Dashboard">Адмін Панель</a>
-                    }
-                </div>
+                </form>
             </div>
-        </nav>
-    </header>
-    
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            <div class="nav-icons">
+                @{
+                    var profileUrl = SignInManager.IsSignedIn(User) ? Url.Action("Profile", "Account") : Url.Action("Login", "Account");
+                }
 
-    <footer class="footer">
-        <div class="container">
-            &copy; 2025 - Lumen Store
+                <a href="@profileUrl" aria-label="Profile">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </a>
+                <a href="#" aria-label="Wishlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                </a>
+                <a href="#" aria-label="Cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                </a>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a href="/Admin/Dashboard">@General["AdminPanel"]</a>
+                }
+            </div>
         </div>
-    </footer>
+    </nav>
+</header>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        &copy; 2025 - Lumen Store | @General["FooterRights"]
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

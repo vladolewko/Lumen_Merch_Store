@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="Login" xml:space="preserve"><value>Вхід</value></data>
+  <data name="Register" xml:space="preserve"><value>Реєстрація</value></data>
+  <data name="Logout" xml:space="preserve"><value>Вийти</value></data>
+  <data name="Submit" xml:space="preserve"><value>Підтвердити</value></data>
+  
+  <data name="Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Password" xml:space="preserve"><value>Пароль</value></data>
+  <data name="ConfirmPassword" xml:space="preserve"><value>Підтвердіть пароль</value></data>
+  <data name="RememberMe" xml:space="preserve"><value>Запам'ятати мене</value></data>
+  <data name="FirstName" xml:space="preserve"><value>Ім'я</value></data>
+  <data name="LastName" xml:space="preserve"><value>Прізвище</value></data>
+  <data name="PhoneNumber" xml:space="preserve"><value>Номер телефону</value></data>
+  <data name="Address" xml:space="preserve"><value>Адреса доставки</value></data>
+
+  <data name="ForgotPassword" xml:space="preserve"><value>Забули пароль?</value></data>
+  <data name="NoAccount" xml:space="preserve"><value>Немає акаунту?</value></data>
+  <data name="AlreadyAccount" xml:space="preserve"><value>Вже є акаунт?</value></data>
+  <data name="CreateAccount" xml:space="preserve"><value>Створити новий акаунт</value></data>
+  <data name="LoginTitle" xml:space="preserve"><value>Використовуйте локальний акаунт для входу</value></data>
+  <data name="RegisterTitle" xml:space="preserve"><value>Створити новий акаунт</value></data>
+  
+  <data name="AccessDenied" xml:space="preserve"><value>Доступ заборонено</value></data>
+  <data name="InvalidLogin" xml:space="preserve"><value>Невірна спроба входу</value></data>
+  <data name="PasswordMismatch" xml:space="preserve"><value>Паролі не співпадають</value></data>
+  <data name="Hello" xml:space="preserve"><value>Вітаємо</value></data>
+  <data name="ManageAccount" xml:space="preserve"><value>Керування акаунтом</value></data>
+  <data name="ProfileUpdated" xml:space="preserve"><value>Профіль оновлено успішно</value></data>
+  <data name="ChangePassword" xml:space="preserve"><value>Змінити пароль</value></data>
+  
+  <data name="EditProfile" xml:space="preserve"><value>Редагувати профіль</value></data>
+  <data name="UpdateInfo" xml:space="preserve"><value>Оновіть свою інформацію</value></data>
+  <data name="YourInfo" xml:space="preserve"><value>Ваша інформація</value></data>
+  <data name="CreatedAt" xml:space="preserve"><value>Дата реєстрації</value></data>
+  <data name="BackToProfile" xml:space="preserve"><value>Назад до профілю</value></data>
+  <data name="SaveChanges" xml:space="preserve"><value>Зберегти зміни</value></data>
+  <data name="Photo" xml:space="preserve"><value>Фото профілю</value></data>
+  
+  <data name="Hero_Title" xml:space="preserve"><value>Запали свою пристрасть</value></data>
+  <data name="Hero_Subtitle" xml:space="preserve"><value>Відбірний мерч, що проливає світло на твої улюблені всесвіти.</value></data>
+  <data name="Hero_Button" xml:space="preserve"><value>Дивитись новинки</value></data>
+  <data name="Bestsellers_Title" xml:space="preserve"><value>Вибір фанатів: Наші бестселери</value></data>
+  
+  <data name="PrivacyPolicy" xml:space="preserve"><value>Політика конфіденційності</value></data>
+  <data name="PrivacyText" xml:space="preserve"><value>Тут ви можете ознайомитись з нашою політикою конфіденційності.</value></data>
+  
+  <data name="CategoriesNotFound" xml:space="preserve"><value>Категорії не знайдено.</value></data>
+</root>

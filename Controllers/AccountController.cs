@@ -52,7 +52,6 @@ public class AccountController : Controller
             }
 
             ModelState.AddModelError(string.Empty, "Невірні дані для входу.");
-            return View(model);
         }
 
         return View(model);
@@ -87,17 +86,13 @@ public class AccountController : Controller
             {
                 _logger.LogInformation("User created a new account with password.");
 
-                // Adding a role of user for the newly created user.
                 await _userManager.AddToRoleAsync(user, "User");
-
                 await _signInManager.SignInAsync(user, false);
                 _logger.LogInformation("User created a new account with password.");
                 return RedirectToLocal(returnUrl);
             }
-
             AddErrors(result);
         }
-
         return View(model);
     }
     

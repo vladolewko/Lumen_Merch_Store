@@ -1,16 +1,16 @@
 ﻿@model Lumen_Merch_Store.ViewModels.CategoryListViewModel
 
 @{
-    ViewData["Title"] = "Категорії";
+    ViewData["Title"] = Catalogue["FilterTitle_Categories"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="menu-list-container">
-    <h2>Категорії</h2>
+    <h2>@Catalogue["FilterTitle_Categories"]</h2>
     
     <form method="get" action="@Url.Action("Categories", "Catalogue")" class="search-form mb-4">
-        <input type="text" name="search" placeholder="Пошук по категоріях..." value="@Model.CurrentSearchTerm" class="form-control" />
-        <button type="submit" class="btn btn-info">Знайти</button>
+        <input type="text" name="search" placeholder="@General["SearchPlaceholder"]" value="@Model.CurrentSearchTerm" class="form-control" />
+        <button type="submit" class="btn btn-info">@General["Find"]</button>
     </form>
 
     <div class="row category-grid">
@@ -20,7 +20,7 @@
                 <a href="@Url.Action("Products", "Catalogue", new { categoryId = category.Id })" class="card category-card">
                     <div class="card-body">
                         <h5 class="card-title">@category.Name</h5>
-                        <p class="card-text">Переглянути товари (@(category.Count ?? 0))</p>
+                        <p class="card-text">@Catalogue["ViewProducts"] (@(category.Count ?? 0))</p>
                     </div>
                 </a>
             </div>
@@ -28,7 +28,7 @@
         
         @if (!Model.Categories.Any())
         {
-            <p>Категорії не знайдено.</p>
+            <p>@Catalogue["CategoriesNotFound"]</p>
         }
     </div>
 </div>

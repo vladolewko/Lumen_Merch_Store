@@ -12,7 +12,7 @@
     </div>
     
     <div class="product-info">
-        <span class="product-universe">Із @Model.UniverseName</span>
+        <span class="product-universe">@Catalogue["Product_From"] @Model.UniverseName</span>
         <h1 class="product-title">@Model.Name</h1>
         <p class="product-price">@Model.Price.ToString("F2") ₴</p>
 
@@ -24,19 +24,19 @@
             @if (Model.Sizes != null && Model.Sizes.Any())
             {
                 <div class="form-group">
-                    <label for="size-select">Розмір:</label>
+                    <label for="size-select">@Catalogue["Product_Size"]</label>
                     <select id="size-select" class="form-select">
                         @foreach (var size in Model.Sizes)
                         {
-                            var sizeText = size.Stock == 0 ? $"{size.Size} (Немає)" : size.Size;
+                            var sizeText = size.Stock == 0 ? $"{size.Size} {Catalogue["Stock_None"]}" : size.Size;
                    
                             @if (size.Stock == 0)
                             {
-                            <option value="@size.Id" disabled>@sizeText</option>
+                                <option value="@size.Id" disabled>@sizeText</option>
                             }
                             else
                             {
-                            <option value="@size.Id">@sizeText</option>
+                                <option value="@size.Id">@sizeText</option>
                             }
                         }
                     </select>
@@ -44,19 +44,19 @@
             }
             
             <div class="form-group">
-                <label for="quantity-input">Кількість:</label>
+                <label for="quantity-input">@Catalogue["Product_Quantity"]</label>
                 <div class="quantity-selector">
-                    <button class="btn-quantity" type="button" aria-label="Зменшити кількість">-</button>
+                    <button class="btn-quantity" type="button" aria-label="Minus">-</button>
                     <input type="text" id="quantity-input" value="1" readonly>
-                    <button class="btn-quantity" type="button" aria-label="Збільшити кількість">+</button>
+                    <button class="btn-quantity" type="button" aria-label="Plus">+</button>
                 </div>
             </div>
         </div>
         
         <div class="product-actions">
-            <button class="btn btn-primary btn-add-to-cart" data-product-id="@Model.Id">Додати в кошик</button>
-            <button class="btn btn-secondary" aria-label="Додати до обраного" data-product-id="@Model.Id">
-                Додати до обраного
+            <button class="btn btn-primary btn-add-to-cart" data-product-id="@Model.Id">@Catalogue["Product_AddToCart"]</button>
+            <button class="btn btn-secondary" aria-label="Add to favorites" data-product-id="@Model.Id">
+                @Catalogue["Product_AddToFav"]
             </button>
         </div>
     </div>

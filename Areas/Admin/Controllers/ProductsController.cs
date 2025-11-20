@@ -11,6 +11,7 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly string[] _supportedCultures = new[] { "uk", "en" }; // Мови сайту
 
         public ProductsController(ApplicationDbContext context)
         {
@@ -21,29 +22,32 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var products = await _context.Products
-                .Include(p => p.Translations.Where(t => t.LanguageCode == "uk"))
+                .Include(p => p.Translations.Where(t => t.LanguageCode == "uk")) // Беремо укр для адмінки
                 .ToListAsync();
 
-            var productList = products.Select(p => new ProductViewModel
+            var model = products.Select(p => new ProductViewModel
             {
                 Id = p.Id,
                 Price = p.Price,
                 Stock = p.Stock,
-                NameUk = p.Translations.FirstOrDefault()?.Name ?? "Назва відсутня" 
+                ImageUrl = p.ImageUrl,
+                NameForGrid = p.Translations.FirstOrDefault()?.Name ?? "---"
             }).ToList();
 
-            return View(productList);
+            return View(model);
         }
 
-        // GET: /Admin/Products/Create
+        // GET: Create
         public async Task<IActionResult> Create()
         {
             var viewModel = new ProductViewModel();
+            // Ініціалізуємо пусті переклади для всіх мов
+            PrepareTranslations(viewModel);
             await PopulateDropdowns(viewModel);
-            return View(viewModel);
+            return View("Edit", viewModel); // Використовуємо спільну View "Edit"
         }
 
-        // POST: /Admin/Products/Create
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductViewModel viewModel)
@@ -58,59 +62,62 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
                     UniverseId = viewModel.UniverseId,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
-                    Translations = new List<ProductTranslation>
-                    {
-                        new ProductTranslation
-                        {
-                            Name = viewModel.NameUk,
-                            ShortDescription = viewModel.ShortDescriptionUk,
-                            FullDescription = viewModel.FullDescriptionUk,
-                            LanguageCode = "uk"
-                        }
-                    }
+                    ImageUrl = await SaveImage(viewModel.ImageFile)
                 };
-                
+
+                // Зберігаємо переклади
+                foreach (var t in viewModel.Translations)
+                {
+                    if (!string.IsNullOrWhiteSpace(t.Name))
+                    {
+                        product.Translations.Add(new ProductTranslation
+                        {
+                            LanguageCode = t.LanguageCode,
+                            Name = t.Name,
+                            ShortDescription = t.ShortDescription,
+                            FullDescription = t.FullDescription
+                        });
+                    }
+                }
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             await PopulateDropdowns(viewModel);
-            return View(viewModel);
+            return View("Edit", viewModel);
         }
 
-        // GET: /Admin/Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var product = await GetProductWithDetails(id.Value);
-
-            if (product == null) return NotFound();
-
-            var viewModel = MapToViewModel(product);
-            
-            await PopulateDropdowns(viewModel); 
-            
-            return View(viewModel);
-        }
-
-        // GET: /Admin/Products/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var product = await GetProductWithDetails(id.Value);
-            
+            var product = await _context.Products
+                .Include(p => p.Translations)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (product == null) return NotFound();
 
-            var viewModel = MapToViewModel(product);
+            var viewModel = new ProductViewModel
+            {
+                Id = product.Id,
+                Price = product.Price,
+                Stock = product.Stock,
+                CategoryId = product.CategoryId,
+                UniverseId = product.UniverseId,
+                ImageUrl = product.ImageUrl
+            };
+
+            // Заповнюємо переклади з БД або створюємо пусті
+            PrepareTranslations(viewModel, product.Translations.ToList());
             await PopulateDropdowns(viewModel);
-            
+
             return View(viewModel);
         }
-        
-        // POST: /Admin/Products/Edit/5
+
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductViewModel viewModel)
@@ -119,126 +126,121 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var product = await _context.Products
+                    .Include(p => p.Translations)
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (product == null) return NotFound();
+
+                product.Price = viewModel.Price;
+                product.Stock = viewModel.Stock;
+                product.CategoryId = viewModel.CategoryId;
+                product.UniverseId = viewModel.UniverseId;
+                product.UpdatedAt = DateTime.Now;
+
+                // Оновлюємо фото, якщо завантажено нове
+                if (viewModel.ImageFile != null)
                 {
-                    var product = await GetProductWithDetails(id);
-                    if (product == null) return NotFound();
-
-                    product.Price = viewModel.Price;
-                    product.Stock = viewModel.Stock;
-                    product.CategoryId = viewModel.CategoryId;
-                    product.UniverseId = viewModel.UniverseId;
-                    product.UpdatedAt = DateTime.Now;
-
-                    // Оновлюємо переклад 
-                    var translation = product.Translations.FirstOrDefault(t => t.LanguageCode == "uk");
-                    if (translation != null)
-                    {
-                        translation.Name = viewModel.NameUk;
-                        translation.ShortDescription = viewModel.ShortDescriptionUk;
-                        translation.FullDescription = viewModel.FullDescriptionUk;
-                    }
-                    else
-                    {
-                        product.Translations.Add(new ProductTranslation
-                        {
-                            Name = viewModel.NameUk,
-                            ShortDescription = viewModel.ShortDescriptionUk,
-                            FullDescription = viewModel.FullDescriptionUk,
-                            LanguageCode = "uk",
-                            ProductId = product.Id 
-                        });
-                    }
-
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    product.ImageUrl = await SaveImage(viewModel.ImageFile);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!await ProductExists(viewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    throw; 
-                }
+
+                // Оновлюємо переклади
+                UpdateTranslations(product, viewModel.Translations);
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
             await PopulateDropdowns(viewModel);
             return View(viewModel);
         }
-
-        // POST: /Admin/Products/Delete/5
+        
+        // POST: Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products
-                                        .Include(p => p.Translations)
-                                        .FirstOrDefaultAsync(p => p.Id == id);
-                                        
+            var product = await _context.Products.FindAsync(id);
             if (product != null)
             {
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction(nameof(Index));
         }
 
-        private Task<Product?> GetProductWithDetails(int id)
+        // === HELPERS ===
+
+        private void PrepareTranslations(ProductViewModel model, List<ProductTranslation>? dbTranslations = null)
         {
-            // Отримати продукт, включаючи переклади, Категорію та Всесвіт
-            return _context.Products
-                .Include(p => p.Translations.Where(t => t.LanguageCode == "uk"))
-                .Include(p => p.Category)
-                .Include(p => p.Universe)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            model.Translations = new List<TranslationViewModel>();
+            foreach (var lang in _supportedCultures)
+            {
+                var existing = dbTranslations?.FirstOrDefault(t => t.LanguageCode == lang);
+                model.Translations.Add(new TranslationViewModel
+                {
+                    LanguageCode = lang,
+                    Name = existing?.Name ?? "",
+                    ShortDescription = existing?.ShortDescription,
+                    FullDescription = existing?.FullDescription
+                });
+            }
+        }
+
+        private void UpdateTranslations(Product product, List<TranslationViewModel> viewTranslations)
+        {
+            foreach (var tView in viewTranslations)
+            {
+                var tDb = product.Translations.FirstOrDefault(t => t.LanguageCode == tView.LanguageCode);
+                if (tDb != null)
+                {
+                    tDb.Name = tView.Name;
+                    tDb.ShortDescription = tView.ShortDescription;
+                    tDb.FullDescription = tView.FullDescription;
+                }
+                else if (!string.IsNullOrWhiteSpace(tView.Name))
+                {
+                    product.Translations.Add(new ProductTranslation
+                    {
+                        LanguageCode = tView.LanguageCode,
+                        Name = tView.Name,
+                        ShortDescription = tView.ShortDescription,
+                        FullDescription = tView.FullDescription,
+                        ProductId = product.Id
+                    });
+                }
+            }
+        }
+
+        private async Task<string> SaveImage(IFormFile? file)
+        {
+            if (file == null) return null;
+            
+            var uploadsFolder = Path.Combine("wwwroot", "images", "products");
+            Directory.CreateDirectory(uploadsFolder);
+            
+            var uniqueFileName = Guid.NewGuid() + "_" + file.FileName;
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+            
+            return "/images/products/" + uniqueFileName;
         }
 
         private async Task PopulateDropdowns(ProductViewModel viewModel)
         {
-            // Завантажуємо категорії та всесвіти з українським перекладом для SelectListItem
-            var categories = await _context.Categories
+            viewModel.Categories = await _context.Categories
                 .Include(c => c.Translations.Where(t => t.LanguageCode == "uk"))
-                .Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Translations.FirstOrDefault()!.Name // Беремо українську назву
-                }).ToListAsync();
-            
-            var universes = await _context.Universes
+                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Translations.FirstOrDefault().Name })
+                .ToListAsync();
+
+            viewModel.Universes = await _context.Universes
                 .Include(u => u.Translations.Where(t => t.LanguageCode == "uk"))
-                .Select(u => new SelectListItem
-                {
-                    Value = u.Id.ToString(),
-                    Text = u.Translations.FirstOrDefault()!.Name // Беремо українську назву
-                }).ToListAsync();
-
-            viewModel.Categories = categories;
-            viewModel.Universes = universes;
-        }
-
-        private ProductViewModel MapToViewModel(Product product)
-        {
-            var translationUk = product.Translations.FirstOrDefault();
-            
-            return new ProductViewModel
-            {
-                Id = product.Id,
-                Price = product.Price,
-                Stock = product.Stock,
-                CategoryId = product.CategoryId,
-                UniverseId = product.UniverseId,
-                NameUk = translationUk?.Name ?? string.Empty,
-                ShortDescriptionUk = translationUk?.ShortDescription ?? string.Empty,
-                FullDescriptionUk = translationUk?.FullDescription ?? string.Empty
-            };
-        }
-
-        private Task<bool> ProductExists(int id)
-        {
-            return _context.Products.AnyAsync(e => e.Id == id);
+                .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Translations.FirstOrDefault().Name })
+                .ToListAsync();
         }
     }
 }

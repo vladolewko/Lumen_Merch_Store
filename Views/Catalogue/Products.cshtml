@@ -1,30 +1,30 @@
 ﻿@model Lumen_Merch_Store.ViewModels.ProductsCatalogViewModel
+@using System.Globalization
 
 @{
-    ViewData["Title"] = "Каталог Товарів";
+    ViewData["Title"] = Catalogue["Title"];
     Layout = "~/Views/Shared/_Layout.cshtml";
     
-    string BuildUrl(int? categoryId = null, int? universeId = null, string sort = null, decimal? minPrice = null, decimal? maxPrice = null, string search = null)
+    string GetFilterUrl(int? catId = null, int? univId = null, string sort = null, decimal? min = null, decimal? max = null, string search = null)
     {
-        // Додайте це, якщо ви його не додали
-        var culture = System.Globalization.CultureInfo.InvariantCulture;
+        var c = catId == 0 ? null : (catId ?? Model.SelectedCategoryId);
+        var u = univId == 0 ? null : (univId ?? Model.SelectedUniverseId);
+        var s = sort ?? Model.CurrentSortOrder;
+        var mn = min ?? Model.SelectedMinPrice;
+        var mx = max ?? Model.SelectedMaxPrice;
+        var q = search ?? Model.CurrentSearchTerm;
 
-        var parameters = new Dictionary<string, string?>
-        {
-            {"categoryId", (categoryId == 0 ? null : (categoryId ?? Model.SelectedCategoryId))?.ToString()}, 
-            {"universeId", (universeId == 0 ? null : (universeId ?? Model.SelectedUniverseId))?.ToString()},
-            {"sortOrder", sort ?? Model.CurrentSortOrder},
-            
-            // ВИПРАВЛЕННЯ ТУТ:
-            {"minPrice", (minPrice ?? Model.SelectedMinPrice)?.ToString(culture)}, 
-            {"maxPrice", (maxPrice ?? Model.SelectedMaxPrice)?.ToString(culture)},
-            
-            {"search", search ?? Model.CurrentSearchTerm}
-        }.Where(kv => !string.IsNullOrEmpty(kv.Value) && kv.Value != "0").ToList();
+        var parms = new Dictionary<string, string>();
+        
+        if (c.HasValue) parms.Add("categoryId", c.Value.ToString());
+        if (u.HasValue) parms.Add("universeId", u.Value.ToString());
+        if (!string.IsNullOrEmpty(s)) parms.Add("sortOrder", s);
+        if (mn.HasValue) parms.Add("minPrice", mn.Value.ToString(CultureInfo.InvariantCulture));
+        if (mx.HasValue) parms.Add("maxPrice", mx.Value.ToString(CultureInfo.InvariantCulture));
+        if (!string.IsNullOrEmpty(q)) parms.Add("search", q);
 
-        // Додано Uri.EscapeDataString для безпеки URL
-        var queryString = string.Join("&", parameters.Select(kv => $"{kv.Key}={Uri.EscapeDataString(kv.Value)}"));
-        return $"/Catalogue/Products?{queryString}";
+        var queryString = string.Join("&", parms.Select(kv => $"{kv.Key}={Uri.EscapeDataString(kv.Value)}"));
+        return string.IsNullOrEmpty(queryString) ? Url.Action("Products", "Catalogue") : $"/Catalogue/Products?{queryString}";
     }
 }
 
@@ -33,94 +33,107 @@
     <aside class="filter-sidebar">
         <form id="filter-form" method="get" action="@Url.Action("Products", "Catalogue")">
             <input type="hidden" name="sortOrder" value="@Model.CurrentSortOrder" />
-            <input type="hidden" name="search" value="@Model.CurrentSearchTerm" />
-            
-            <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" /> 
-            <input type="hidden" name="universeId" value="@Model.SelectedUniverseId" /> 
             
             <div class="filter-section">
-                <h3 class="filter-title">Категорії</h3>
+                <h3 class="filter-title">@Catalogue["FilterTitle_Search"]</h3>
+                <input type="text" name="search" value="@Model.CurrentSearchTerm" class="form-control" placeholder="@General["SearchPlaceholder"]" />
+            </div>
+            
+            <div class="filter-section">
+                <h3 class="filter-title">@Catalogue["FilterTitle_Categories"]</h3>
                 <ul class="filter-list">
-                    <li><a href="@BuildUrl(categoryId: 0)" class="@(Model.SelectedCategoryId == null ? "active" : "")">Всі</a></li>
+                    <li>
+                        <a href="@GetFilterUrl(catId: 0)" class="@(Model.SelectedCategoryId == null ? "active" : "")">@Catalogue["All"]</a>
+                    </li>
                     @foreach (var category in Model.Categories)
                     {
                         <li>
-                            <a href="@BuildUrl(categoryId: category.Id)" class="@(Model.SelectedCategoryId == category.Id ? "active" : "")">
-                                @category.Name
+                            <a href="@GetFilterUrl(catId: category.Id)" class="@(Model.SelectedCategoryId == category.Id ? "active" : "")">
+                                @category.Name <span class="text-muted small">(@(category.Count ?? 0))</span>
                             </a>
                         </li>
                     }
                 </ul>
+                <input type="hidden" name="categoryId" value="@(Model.SelectedCategoryId ?? 0)" />
             </div>
             
             <div class="filter-section">
-                <h3 class="filter-title">Всесвіти</h3>
+                <h3 class="filter-title">@Catalogue["FilterTitle_Universes"]</h3>
                 <ul class="filter-list">
-                    <li><a href="@BuildUrl(universeId: 0)" class="@(Model.SelectedUniverseId == null ? "active" : "")">Всі</a></li>
+                    <li>
+                        <a href="@GetFilterUrl(univId: 0)" class="@(Model.SelectedUniverseId == null ? "active" : "")">@Catalogue["All"]</a>
+                    </li>
                     @foreach (var universe in Model.Universes)
                     {
                         <li>
-                            <a href="@BuildUrl(universeId: universe.Id)" class="@(Model.SelectedUniverseId == universe.Id ? "active" : "")">
-                                @universe.Name
+                            <a href="@GetFilterUrl(univId: universe.Id)" class="@(Model.SelectedUniverseId == universe.Id ? "active" : "")">
+                                @universe.Name <span class="text-muted small">(@(universe.Count ?? 0))</span>
                             </a>
                         </li>
                     }
                 </ul>
+                 <input type="hidden" name="universeId" value="@(Model.SelectedUniverseId ?? 0)" />
             </div>
             
             <div class="filter-section">
-                <h3 class="filter-title">Ціна</h3>
+                <h3 class="filter-title">@Catalogue["FilterTitle_Price"]</h3>
                 <div class="price-filter">
-                    <input type="number" name="minPrice" value="@Model.SelectedMinPrice" min="@Model.MinPrice" max="@Model.MaxPrice" placeholder="Від" class="form-control mb-2" />
-                    <input type="number" name="maxPrice" value="@Model.SelectedMaxPrice" min="@Model.MinPrice" max="@Model.MaxPrice" placeholder="До" class="form-control mb-2" />
-                    <div class="price-values">
-                        <span>Min: @Model.MinPrice.ToString("F2") ₴</span>
-                        <span>Max: @Model.MaxPrice.ToString("F2") ₴</span>
+                    <div class="d-flex gap-2">
+                        <input type="number" name="minPrice" value="@(Model.SelectedMinPrice?.ToString(CultureInfo.InvariantCulture))" 
+                               min="@(Math.Floor(Model.MinPrice))" max="@(Math.Ceiling(Model.MaxPrice))" 
+                               placeholder="@Catalogue["PriceFrom"]" class="form-control mb-2" step="0.01" />
+                        
+                        <input type="number" name="maxPrice" value="@(Model.SelectedMaxPrice?.ToString(CultureInfo.InvariantCulture))" 
+                               min="@(Math.Floor(Model.MinPrice))" max="@(Math.Ceiling(Model.MaxPrice))" 
+                               placeholder="@Catalogue["PriceTo"]" class="form-control mb-2" step="0.01" />
+                    </div>
+                    <div class="price-values small text-muted">
+                        @Catalogue["PriceRange"]: @Model.MinPrice.ToString("F0") - @Model.MaxPrice.ToString("F0") ₴
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Застосувати фільтри</button>
+            <button type="submit" class="btn btn-primary w-100 mt-3">@General["Apply"]</button>
+            <a href="@Url.Action("Products", "Catalogue")" class="btn btn-outline-secondary w-100 mt-2">@General["Reset"]</a>
         </form>
     </aside>
     
     <main class="product-grid-container">
-        <div class="grid-header">
-            <h2>Знайдено @Model.TotalProductsCount товари(ів)</h2>
+        <div class="grid-header d-flex justify-content-between align-items-center mb-4">
+            <h2>@Catalogue["FoundTotal"] (@Model.TotalProductsCount)</h2>
         
-            <form method="get" action="@Url.Action("Products", "Catalogue")">
+            <form method="get" action="@Url.Action("Products", "Catalogue")" class="d-inline-block">
                 <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" />
                 <input type="hidden" name="universeId" value="@Model.SelectedUniverseId" />
-                <input type="hidden" name="minPrice" value="@Model.SelectedMinPrice" />
-                <input type="hidden" name="maxPrice" value="@Model.SelectedMaxPrice" />
+                <input type="hidden" name="minPrice" value="@(Model.SelectedMinPrice?.ToString(CultureInfo.InvariantCulture))" />
+                <input type="hidden" name="maxPrice" value="@(Model.SelectedMaxPrice?.ToString(CultureInfo.InvariantCulture))" />
                 <input type="hidden" name="search" value="@Model.CurrentSearchTerm" />
 
-          
-                <select name="sortOrder" class="sort-by" onchange="this.form.submit()">
-    
-                    @{ 
-                        var currentSort = Model.CurrentSortOrder; 
-                    }
-
-                    <option value="default" selected="@(string.IsNullOrEmpty(currentSort) || currentSort == "default")">Сортувати за</option>
-                    <option value="price-asc" selected="@(currentSort == "price-asc")">Ціна: за зростанням</option>
-                    <option value="price-desc" selected="@(currentSort == "price-desc")">Ціна: за спаданням</option>
-                    <option value="newest" selected="@(currentSort == "newest")">За новинками</option>
+                <select name="sortOrder" class="form-select" onchange="this.form.submit()">
+                    <option value="default" selected="@(string.IsNullOrEmpty(Model.CurrentSortOrder) || Model.CurrentSortOrder == "default")">@Catalogue["Sort_Default"]</option>
+                    <option value="price-asc" selected="@(Model.CurrentSortOrder == "price-asc")">@Catalogue["Sort_PriceAsc"]</option>
+                    <option value="price-desc" selected="@(Model.CurrentSortOrder == "price-desc")">@Catalogue["Sort_PriceDesc"]</option>
+                    <option value="newest" selected="@(Model.CurrentSortOrder == "newest")">@Catalogue["Sort_Newest"]</option>
                 </select>
             </form>
-        
         </div>
     
-        <div class="product-grid">
+        <div class="product-grid row">
             @foreach (var product in Model.Products)
             {
-                <partial name="_ProductCard" model="product" />
+               <div class="mb-4">
+                   <partial name="_ProductCard" model="product" />
+               </div>
             }
         
             @if (!Model.Products.Any())
             {
-                <p>Не знайдено товарів за вашим запитом.</p>
+                <div class="col-12 text-center py-5">
+                    <h4>@Catalogue["NotFound"] 😔</h4>
+                    <p>@Catalogue["TryChangeSearch"]</p>
+                </div>
             }
         </div>
+        
     </main>
 </div>

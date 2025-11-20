@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="Title" xml:space="preserve"><value>Product Catalog</value></data>
+  <data name="FilterTitle_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="FilterTitle_Categories" xml:space="preserve"><value>Categories</value></data>
+  <data name="FilterTitle_Universes" xml:space="preserve"><value>Universes</value></data>
+  <data name="FilterTitle_Price" xml:space="preserve"><value>Price</value></data>
+  <data name="All" xml:space="preserve"><value>All</value></data>
+  <data name="PriceFrom" xml:space="preserve"><value>From</value></data>
+  <data name="PriceTo" xml:space="preserve"><value>To</value></data>
+  <data name="PriceRange" xml:space="preserve"><value>Range</value></data>
+  <data name="FoundTotal" xml:space="preserve"><value>Products found</value></data>
+  <data name="NotFound" xml:space="preserve"><value>No products found</value></data>
+  <data name="TryChangeSearch" xml:space="preserve"><value>Try changing search parameters</value></data>
+  <data name="Sort_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Sort_PriceAsc" xml:space="preserve"><value>Price: Low to High</value></data>
+  <data name="Sort_PriceDesc" xml:space="preserve"><value>Price: High to Low</value></data>
+  <data name="Sort_Newest" xml:space="preserve"><value>New Arrivals</value></data>
+  <data name="Sort_Label" xml:space="preserve"><value>Sort by</value></data>
+  <data name="Product_From" xml:space="preserve"><value>From</value></data>
+  <data name="Product_Size" xml:space="preserve"><value>Size:</value></data>
+  <data name="Product_Quantity" xml:space="preserve"><value>Quantity:</value></data>
+  <data name="Product_AddToCart" xml:space="preserve"><value>Add to Cart</value></data>
+  <data name="Product_AddToFav" xml:space="preserve"><value>Add to Wishlist</value></data>
+  <data name="Stock_None" xml:space="preserve"><value>(Out of Stock)</value></data>
+  <data name="ViewProducts" xml:space="preserve"><value>View products</value></data>
+  
+  <data name="UniversesNotFound" xml:space="preserve"><value>Universes not found.</value></data>
+  <data name="UnknownUniverse" xml:space="preserve"><value>Unknown Universe</value></data>
+  <data name="Untitled" xml:space="preserve"><value>Untitled</value></data>
+</root>

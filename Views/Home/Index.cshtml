@@ -1,29 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-    // In a real app, you would pass a list of Product models from your controller
+    ViewData["Title"] = General["Home"];
 }
 
-<!-- ======================= HERO SECTION ======================= -->
 <section class="hero" style="background-image: url('/images/hero-bg.jpg');">
     <div class="hero-content">
-        <h1>Illuminate Your Passion</h1>
-        <p>Curated merch that brings your favorite universes to light.</p>
-        <a href="#" class="btn btn-primary">Shop New Arrivals</a>
+        <h1>@General["Hero_Title"]</h1>
+        <p>@General["Hero_Subtitle"]</p>
+        <a href="@Url.Action("Products", "Catalogue")" class="btn btn-primary">@General["Hero_Button"]</a>
     </div>
 </section>
-
-<!-- ======================= BESTSELLERS ======================= -->
-<section class="section container">
-    <h2>Fan Favorites: Our Bestsellers</h2>
-    <div class="product-grid">
-        @* In a real application loop through your product models here.
-            For example:
-            @foreach (var product in Model.Bestsellers)
-            {
-                <partial name="_ProductCard" model="product" />
-            }
-            For now, we will just render the partial with dummy data.
-        *@
-        
-    </div>
-</section>
+@* *@
+@* <section class="section container"> *@
+@*     <h2>@General["Bestsellers_Title"]</h2> *@
+@*     <div class="product-grid"> *@
+@*         $1$ Тут буде цикл з товарами #1# *@
+@*     </div> *@
+@* </section> *@

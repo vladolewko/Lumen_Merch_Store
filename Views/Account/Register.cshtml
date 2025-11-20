@@ -1,7 +1,7 @@
 @model Lumen_Merch_Store.ViewModels.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Реєстрація";
+    ViewData["Title"] = Auth["Register"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
         <div class="profile-header">
             <div class="profile-identity">
                 <h2 class="profile-name">@ViewData["Title"]</h2>
-                <p class="profile-email">Створіть новий акаунт</p>
+                <p class="profile-email">@Auth["RegisterTitle"]</p>
             </div>
         </div>
         
@@ -20,39 +20,39 @@
                 
                 <div class="details-list">
                     <div class="form-group mb-4">
-                        <label asp-for="Name" class="form-label"></label>
+                        <label asp-for="Name" class="form-label">@Auth["FirstName"]</label>
                         <input asp-for="Name" class="form-control" autocomplete="name" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     
                     <div class="form-group mb-4">
-                        <label asp-for="Email" class="form-label"></label>
+                        <label asp-for="Email" class="form-label">@Auth["Email"]</label>
                         <input asp-for="Email" class="form-control" autocomplete="email" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     
                     <div class="form-group mb-4">
-                        <label asp-for="Phone" class="form-label"></label>
+                        <label asp-for="Phone" class="form-label">@Auth["PhoneNumber"]</label>
                         <input asp-for="Phone" class="form-control" autocomplete="tel" />
                         <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
                     
                     <div class="form-group mb-4">
-                        <label asp-for="Password" class="form-label"></label>
+                        <label asp-for="Password" class="form-label">@Auth["Password"]</label>
                         <input asp-for="Password" class="form-control" autocomplete="new-password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     
                     <div class="form-group mb-4">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <label asp-for="ConfirmPassword" class="form-label">@Auth["ConfirmPassword"]</label>
                         <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
                 </div>
                 
                 <div class="profile-actions">
-                    <button type="submit" class="btn btn-primary">Зареєструватися</button>
-                    <a asp-action="Login" class="btn btn-secondary">Вже маєте акаунт?</a>
+                    <button type="submit" class="btn btn-primary">@Auth["Register"]</button>
+                    <a asp-action="Login" class="btn btn-secondary">@Auth["AlreadyAccount"]</a>
                 </div>
             </form>
         </div>

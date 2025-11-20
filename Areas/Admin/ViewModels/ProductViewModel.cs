@@ -5,34 +5,31 @@ namespace Lumen_Merch_Store.Areas.Admin.ViewModels;
 
 public class ProductViewModel
 {
-    // Базові поля Product
     public int Id { get; set; }
 
+    // === ЗАГАЛЬНІ ПОЛЯ (Спільні для всіх мов) ===
     [Required(ErrorMessage = "Ціна є обов'язковою.")]
-    [Range(0.01, 100000.00, ErrorMessage = "Ціна має бути більше нуля.")]
     public decimal Price { get; set; }
 
-    [Required(ErrorMessage = "Запас є обов'язковим.")]
-    [Range(0, int.MaxValue, ErrorMessage = "Запас не може бути від'ємним.")]
+    [Required]
     public int Stock { get; set; }
 
-    [Required(ErrorMessage = "Потрібно обрати категорію.")]
+    [Required]
     public int CategoryId { get; set; }
 
-    [Required(ErrorMessage = "Потрібно обрати всесвіт.")]
+    [Required]
     public int UniverseId { get; set; }
+    
+    // Фото
+    public IFormFile? ImageFile { get; set; }
+    public string? ImageUrl { get; set; }
 
-    [Required(ErrorMessage = "Назва продукту українською є обов'язковою.")]
-    [MaxLength(150)]
-    public string NameUk { get; set; } = string.Empty;
+    // === СПИСОК ПЕРЕКЛАДІВ ===
+    // Тут ми будемо зберігати дані для кожної мови
+    public List<TranslationViewModel> Translations { get; set; } = new();
 
-    [MaxLength(255)]
-    public string ShortDescriptionUk { get; set; } = string.Empty;
-
-    [MaxLength(1024)]
-    public string FullDescriptionUk { get; set; } = string.Empty;
-
-    // Поля для відображення списків (Dropdowns)
+    public string? NameForGrid { get; set; }
+    // Dropdowns
     public IEnumerable<SelectListItem>? Categories { get; set; }
     public IEnumerable<SelectListItem>? Universes { get; set; }
 }

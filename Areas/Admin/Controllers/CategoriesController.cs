@@ -10,153 +10,120 @@ namespace Lumen_Merch_Store.Areas.Admin.Controllers
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly string[] _supportedCultures = new[] { "uk", "en" };
 
         public CategoriesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: /Admin/Categories
         public async Task<IActionResult> Index()
         {
             var items = await _context.Categories
                 .Include(c => c.Translations.Where(t => t.LanguageCode == "uk"))
                 .ToListAsync();
 
-            var viewModelList = items.Select(c => MapToViewModel(c)).ToList();
-
-            return View(viewModelList);
+            return View(items.Select(c => new CategoryViewModel 
+            { 
+                Id = c.Id, 
+                NameForGrid = c.Translations.FirstOrDefault()?.Name ?? "---" 
+            }));
         }
 
-        // GET: /Admin/Categories/Create
         public IActionResult Create()
         {
-            return View(new CategoryViewModel());
+            var model = new CategoryViewModel();
+            PrepareTranslations(model);
+            return View("Edit", model);
         }
 
-        // POST: /Admin/Categories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var category = new Category
-                {
-                    Translations = new List<CategoryTranslation>
-                    {
-                        new CategoryTranslation
-                        {
-                            Name = viewModel.NameUk,
-                            Description = viewModel.DescriptionUk,
-                            LanguageCode = "uk"
-                        }
-                    }
-                };
-
+                var category = new Category();
+                UpdateTranslations(category, viewModel.Translations);
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(viewModel);
+            return View("Edit", viewModel);
         }
 
-        // GET: /Admin/Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var category = await GetItemWithDetails(id.Value);
-
-            if (category == null) return NotFound();
-
-            return View(MapToViewModel(category));
-        }
-
-        // GET: /Admin/Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-
-            var category = await GetItemWithDetails(id.Value);
-
+            var category = await _context.Categories.Include(c => c.Translations).FirstOrDefaultAsync(c => c.Id == id);
             if (category == null) return NotFound();
 
-            return View(MapToViewModel(category));
+            var model = new CategoryViewModel { Id = category.Id };
+            PrepareTranslations(model, category.Translations.ToList());
+            return View(model);
         }
-        
-        // POST: /Admin/Categories/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CategoryViewModel viewModel)
         {
             if (id != viewModel.Id) return NotFound();
-
             if (ModelState.IsValid)
             {
-                var category = await GetItemWithDetails(id);
+                var category = await _context.Categories.Include(c => c.Translations).FirstOrDefaultAsync(c => c.Id == id);
                 if (category == null) return NotFound();
 
-                var translation = category.Translations.FirstOrDefault(t => t.LanguageCode == "uk");
-                
-                if (translation != null)
-                {
-                    translation.Name = viewModel.NameUk;
-                    translation.Description = viewModel.DescriptionUk;
-                }
-                else
-                {
-                    // Додаємо новий переклад, якщо він відсутній
-                    category.Translations.Add(new CategoryTranslation
-                    {
-                        Name = viewModel.NameUk,
-                        Description = viewModel.DescriptionUk,
-                        LanguageCode = "uk",
-                        CategoryId = category.Id
-                    });
-                }
-                
-                _context.Update(category);
+                UpdateTranslations(category, viewModel.Translations);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
         }
-        
-        // POST: /Admin/Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var category = await GetItemWithDetails(id);
 
-            if (category != null)
+        // Допоміжні методи
+        private void PrepareTranslations(CategoryViewModel model, List<CategoryTranslation>? dbTranslations = null)
+        {
+            model.Translations = new List<TranslationViewModel>();
+            foreach (var lang in _supportedCultures)
             {
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                var existing = dbTranslations?.FirstOrDefault(t => t.LanguageCode == lang);
+                model.Translations.Add(new TranslationViewModel
+                {
+                    LanguageCode = lang,
+                    Name = existing?.Name ?? "",
+                    Description = existing?.Description
+                });
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
-        // --- Приватні допоміжні методи ---
-        private Task<Category?> GetItemWithDetails(int id)
+        private void UpdateTranslations(Category category, List<TranslationViewModel> viewTranslations)
         {
-            return _context.Categories
-                .Include(c => c.Translations.Where(t => t.LanguageCode == "uk"))
-                .FirstOrDefaultAsync(m => m.Id == id);
+            foreach (var tView in viewTranslations)
+            {
+                var tDb = category.Translations.FirstOrDefault(t => t.LanguageCode == tView.LanguageCode);
+                if (tDb != null)
+                {
+                    tDb.Name = tView.Name;
+                    tDb.Description = tView.Description;
+                }
+                else if (!string.IsNullOrWhiteSpace(tView.Name))
+                {
+                    category.Translations.Add(new CategoryTranslation
+                    {
+                        LanguageCode = tView.LanguageCode,
+                        Name = tView.Name,
+                        Description = tView.Description
+                    });
+                }
+            }
         }
         
-        private CategoryViewModel MapToViewModel(Category category)
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var translationUk = category.Translations.FirstOrDefault(t => t.LanguageCode == "uk");
-
-            return new CategoryViewModel
-            {
-                Id = category.Id,
-                NameUk = translationUk?.Name ?? string.Empty,
-                DescriptionUk = translationUk?.Description
-            };
+            var category = await _context.Categories.FindAsync(id);
+            if (category != null) { _context.Categories.Remove(category); await _context.SaveChangesAsync(); }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

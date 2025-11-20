@@ -6,14 +6,8 @@ namespace Lumen_Merch_Store.Areas.Admin.ViewModels;
 public class CategoryViewModel
 {
     public int Id { get; set; }
-
-    // Поля перекладу (Українська)
-    [Required(ErrorMessage = "Введіть назву категорії")]
-    [StringLength(100)]
-    [Display(Name = "Назва (Українська)")]
-    public string NameUk { get; set; } = string.Empty;
-
-    [StringLength(255)]
-    [Display(Name = "Опис (Українська)")]
-    public string? DescriptionUk { get; set; }
+    public List<TranslationViewModel> Translations { get; set; } = new();
+        
+    // Для таблиці
+    public string? NameForGrid { get; set; }
 }
