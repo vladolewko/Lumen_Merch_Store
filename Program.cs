@@ -3,7 +3,8 @@ using Lumen_Merch_Store.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization; // Додано
 using Microsoft.EntityFrameworkCore;
-using System.Globalization; // Додано
+using System.Globalization;
+using Lumen_Merch_Store.Resources; // Додано
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,15 +42,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-// 4. ДОДАВАННЯ СЕРВІСІВ ЛОКАЛІЗАЦІЇ
 builder.Services.AddLocalization();
 
-builder.Services.AddControllersWithViews()
-    .AddViewLocalization(); // Додає підтримку локалізації у Views
+builder.Services.AddControllersWithViews().AddViewLocalization();
 
 var app = builder.Build();
 
-// 5. НАЛАШТУВАННЯ MIDDLEWARE ЛОКАЛІЗАЦІЇ
 var supportedCultures = new[]
 {
     new CultureInfo("uk"),

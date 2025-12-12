@@ -51,7 +51,7 @@ public class AccountController : Controller
                 return RedirectToAction(nameof(Lockout));
             }
 
-            ModelState.AddModelError(string.Empty, "Невірні дані для входу.");
+            ModelState.AddModelError(string.Empty, "Wrong Login Data.");
         }
 
         return View(model);

@@ -22,8 +22,6 @@ public class Product
     public DateTime UpdatedAt { get; set; }
     public string? ImageUrl { get; set; } 
 
-    // All navigation properties with virtual
-
     public virtual ICollection<ProductTranslation> Translations { get; set; } = new List<ProductTranslation>();
     public Universe Universe { get; set; } = null!;   
     public Category Category { get; set; } = null!;

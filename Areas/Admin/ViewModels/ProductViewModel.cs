@@ -23,9 +23,6 @@ public class ProductViewModel
     // Фото
     public IFormFile? ImageFile { get; set; }
     public string? ImageUrl { get; set; }
-
-    // === СПИСОК ПЕРЕКЛАДІВ ===
-    // Тут ми будемо зберігати дані для кожної мови
     public List<TranslationViewModel> Translations { get; set; } = new();
 
     public string? NameForGrid { get; set; }

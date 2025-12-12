@@ -5,7 +5,7 @@ namespace Lumen_Merch_Store.ViewModels;
 public class RegisterViewModel
 {
     [Required]
-    [Display(Name = "Ім'я")]
+    [Display(Name = "Name")]
     [StringLength(100, ErrorMessage = "Ім'я не може бути довше 100 символів.")]
     public string Name { get; set; } = string.Empty;
 
@@ -16,17 +16,17 @@ public class RegisterViewModel
 
     [Required]
     [Phone]
-    [Display(Name = "Телефон")]
+    [Display(Name = "Phone")]
     public string Phone { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(100, ErrorMessage = "Пароль має бути не менше {2} і не більше {1} символів.", MinimumLength = 6)]
+    [StringLength(100, ErrorMessage = "Password lenght must be between 6 and 100 symbols", MinimumLength = 6)]
     [DataType(DataType.Password)]
-    [Display(Name = "Пароль")]
+    [Display(Name = "Password")]
     public string Password { get; set; } = string.Empty;
 
     [DataType(DataType.Password)]
-    [Display(Name = "Підтвердження паролю")]
-    [Compare("Password", ErrorMessage = "Пароль та його підтвердження не співпадають.")]
+    [Display(Name = "Confirm Password")]
+    [Compare("Password", ErrorMessage = "Password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 }

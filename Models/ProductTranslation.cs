@@ -16,8 +16,6 @@ public class ProductTranslation
 
     [MaxLength(1024)] public string? FullDescription { get; set; }
 
-    /* Relations */
-
     public virtual Product Product { get; set; } = null!;
 
     public virtual Language Language { get; set; } = null!;
