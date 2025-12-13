@@ -668,4 +668,70 @@ main {
   align-items: center;
 }
 
+/* Cart Badge Styles */
+.cart-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--primary-accent);
+  color: var(--bg-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+}
+
+/* Cart Page Styles */
+.cart-item .card-body {
+  padding: 1.5rem;
+}
+
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item .price {
+  color: var(--text-light);
+}
+
+.cart-item .quantity-input {
+  background-color: var(--surface-color);
+  border: 1px solid #333;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.cart-summary {
+  background-color: var(--surface-color);
+  border: 1px solid #333;
+}
+
+.cart-summary .card-body {
+  padding: 1.5rem;
+}
+
+/* Checkout Page Styles */
+.order-items img {
+  object-fit: cover;
+}
+
+/* Order Confirmation */
+.text-success {
+  color: #22c55e !important;
+}
+
 /*# sourceMappingURL=lumen-styles.css.map */

@@ -18,7 +18,11 @@
             <h4 class="product-name">@(Model.Name ?? Catalogue["Untitled"].Value)</h4>
             <p class="product-price">@(Model.Price.ToString("F2")) ₴</p>
             
-            <button class="btn btn-primary btn-sm w-100" data-product-id="@Model.Id">
+            <button type="button" class="btn btn-primary btn-sm w-100 add-to-cart-btn" 
+                    data-product-id="@Model.Id"
+                    data-product-name="@Model.Name"
+                    data-product-image="@Model.ImageUrl"
+                    data-product-price="@Model.Price">
                 @Catalogue["Product_AddToCart"]
             </button>
         </div>

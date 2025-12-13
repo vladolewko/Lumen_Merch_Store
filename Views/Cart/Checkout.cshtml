@@ -1,0 +1,125 @@
+@model Lumen_Merch_Store.ViewModels.CheckoutViewModel
+
+@{
+    ViewData["Title"] = General["Checkout"];
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">@General["Checkout"]</h1>
+
+    <form asp-action="Checkout" method="post">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">@General["ContactInformation"]</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">@General["FullName"] *</label>
+                            <input asp-for="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">@General["Email"] *</label>
+                            <input asp-for="Email" type="email" class="form-control" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label">@General["Phone"] *</label>
+                            <input asp-for="Phone" type="tel" class="form-control" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">@General["DeliveryInformation"]</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="DeliveryAddress" class="form-label">@General["DeliveryAddress"] *</label>
+                            <textarea asp-for="DeliveryAddress" class="form-control" rows="3" required 
+                                      placeholder="@General["DeliveryAddressPlaceholder"]"></textarea>
+                            <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label">@General["OrderNotes"]</label>
+                            <textarea asp-for="Notes" class="form-control" rows="2" 
+                                      placeholder="@General["OrderNotesPlaceholder"]"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card cart-summary sticky-top" style="top: 20px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">@General["OrderSummary"]</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="order-items mb-4">
+                            @foreach (var item in Model.Cart.Items)
+                            {
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="d-flex">
+                                        <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://placehold.co/60x60/1E1E1E/FACC15.png?text=P" : item.ImageUrl)" 
+                                             alt="@item.ProductName" 
+                                             class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                        <div>
+                                            <h6 class="mb-0">@item.ProductName</h6>
+                                            @if (!string.IsNullOrEmpty(item.SizeName))
+                                            {
+                                                <small class="text-muted">@General["Size"]: @item.SizeName</small>
+                                            }
+                                            <div class="text-muted small">@item.Quantity x @item.Price.ToString("N2") ₴</div>
+                                        </div>
+                                    </div>
+                                    <span class="fw-bold">@item.Total.ToString("N2") ₴</span>
+                                </div>
+                            }
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>@General["Subtotal"]</span>
+                            <span>@Model.Cart.Subtotal.ToString("N2") ₴</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>@General["Shipping"]</span>
+                            <span class="text-success">@General["Free"]</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong class="fs-5">@General["Total"]</strong>
+                            <strong class="fs-5 text-primary">@Model.Cart.Subtotal.ToString("N2") ₴</strong>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                            @General["PlaceOrder"]
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <a href="@Url.Action("Index")" class="text-muted">
+                                ← @General["BackToCart"]
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -1,0 +1,89 @@
+@model Lumen_Merch_Store.Models.Order
+
+@{
+    ViewData["Title"] = General["OrderConfirmation"];
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <div class="mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="text-success">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        <h1 class="text-success">@General["OrderSuccess"]</h1>
+        <p class="lead text-muted">@General["OrderSuccessDescription"]</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">@General["OrderDetails"] #@Model.Id</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>@General["OrderDate"]:</strong></p>
+                            <p class="text-muted">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>@General["OrderStatus"]:</strong></p>
+                            <span class="badge bg-warning">@General["StatusPending"]</span>
+                        </div>
+                    </div>
+
+                    <h6 class="mb-3">@General["OrderedItems"]:</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>@General["Product"]</th>
+                                    <th class="text-center">@General["Quantity"]</th>
+                                    <th class="text-end">@General["Price"]</th>
+                                    <th class="text-end">@General["Total"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    var productName = item.Product?.Translations?.FirstOrDefault()?.Name ?? $"Product #{item.ProductId}";
+                                    <tr>
+                                        <td>
+                                            @productName
+                                            @if (item.Size != null)
+                                            {
+                                                <small class="text-muted">(@item.Size.Size)</small>
+                                            }
+                                        </td>
+                                        <td class="text-center">@item.Quantity</td>
+                                        <td class="text-end">@item.Price.ToString("N2") ₴</td>
+                                        <td class="text-end">@((item.Price * item.Quantity).ToString("N2")) ₴</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>@General["Total"]:</strong></td>
+                                    <td class="text-end"><strong class="text-primary">@Model.Total.ToString("N2") ₴</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Products", "Catalogue")" class="btn btn-primary">
+                    @General["ContinueShopping"]
+                </a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a href="@Url.Action("Profile", "Account")" class="btn btn-outline-secondary ms-2">
+                        @General["ViewMyOrders"]
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

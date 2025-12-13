@@ -1,5 +1,6 @@
 using Lumen_Merch_Store.Data;
 using Lumen_Merch_Store.Models;
+using Lumen_Merch_Store.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization; // Додано
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,20 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+// 4. Session configuration
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// 5. Register services
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddHttpClient<ITelegramNotificationService, TelegramNotificationService>();
+
 builder.Services.AddLocalization();
 
 builder.Services.AddControllersWithViews().AddViewLocalization();
@@ -72,6 +87,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

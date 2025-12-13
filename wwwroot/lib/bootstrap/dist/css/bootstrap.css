@@ -4671,13 +4671,13 @@ textarea.form-control-lg {
 }
 
 .card-body {
-    color   : var(--bs-card-color);
+    color   : #999;
     flex    : 1 1 auto;
     padding : var(--bs-card-spacer-y) var(--bs-card-spacer-x);
 }
 
 .card-title {
-    color         : var(--bs-card-title-color);
+    color         : #999;
     margin-bottom : var(--bs-card-title-spacer-y);
 }
 

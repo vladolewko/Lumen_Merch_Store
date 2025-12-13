@@ -146,5 +146,227 @@ namespace Lumen_Merch_Store.Resources {
                 return ResourceManager.GetString("NoProductsYet", resourceCulture);
             }
         }
+        
+        internal static string Cart {
+            get {
+                return ResourceManager.GetString("Cart", resourceCulture);
+            }
+        }
+        
+        internal static string CartEmpty {
+            get {
+                return ResourceManager.GetString("CartEmpty", resourceCulture);
+            }
+        }
+        
+        internal static string CartEmptyDescription {
+            get {
+                return ResourceManager.GetString("CartEmptyDescription", resourceCulture);
+            }
+        }
+        
+        internal static string ContinueShopping {
+            get {
+                return ResourceManager.GetString("ContinueShopping", resourceCulture);
+            }
+        }
+        
+        internal static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        internal static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        internal static string OrderSummary {
+            get {
+                return ResourceManager.GetString("OrderSummary", resourceCulture);
+            }
+        }
+        
+        internal static string Subtotal {
+            get {
+                return ResourceManager.GetString("Subtotal", resourceCulture);
+            }
+        }
+        
+        internal static string Items {
+            get {
+                return ResourceManager.GetString("Items", resourceCulture);
+            }
+        }
+        
+        internal static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        internal static string ProceedToCheckout {
+            get {
+                return ResourceManager.GetString("ProceedToCheckout", resourceCulture);
+            }
+        }
+        
+        internal static string Checkout {
+            get {
+                return ResourceManager.GetString("Checkout", resourceCulture);
+            }
+        }
+        
+        internal static string ContactInformation {
+            get {
+                return ResourceManager.GetString("ContactInformation", resourceCulture);
+            }
+        }
+        
+        internal static string FullName {
+            get {
+                return ResourceManager.GetString("FullName", resourceCulture);
+            }
+        }
+        
+        internal static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        
+        internal static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        internal static string DeliveryInformation {
+            get {
+                return ResourceManager.GetString("DeliveryInformation", resourceCulture);
+            }
+        }
+        
+        internal static string DeliveryAddress {
+            get {
+                return ResourceManager.GetString("DeliveryAddress", resourceCulture);
+            }
+        }
+        
+        internal static string DeliveryAddressPlaceholder {
+            get {
+                return ResourceManager.GetString("DeliveryAddressPlaceholder", resourceCulture);
+            }
+        }
+        
+        internal static string OrderNotes {
+            get {
+                return ResourceManager.GetString("OrderNotes", resourceCulture);
+            }
+        }
+        
+        internal static string OrderNotesPlaceholder {
+            get {
+                return ResourceManager.GetString("OrderNotesPlaceholder", resourceCulture);
+            }
+        }
+        
+        internal static string Shipping {
+            get {
+                return ResourceManager.GetString("Shipping", resourceCulture);
+            }
+        }
+        
+        internal static string Free {
+            get {
+                return ResourceManager.GetString("Free", resourceCulture);
+            }
+        }
+        
+        internal static string PlaceOrder {
+            get {
+                return ResourceManager.GetString("PlaceOrder", resourceCulture);
+            }
+        }
+        
+        internal static string BackToCart {
+            get {
+                return ResourceManager.GetString("BackToCart", resourceCulture);
+            }
+        }
+        
+        internal static string OrderConfirmation {
+            get {
+                return ResourceManager.GetString("OrderConfirmation", resourceCulture);
+            }
+        }
+        
+        internal static string OrderSuccess {
+            get {
+                return ResourceManager.GetString("OrderSuccess", resourceCulture);
+            }
+        }
+        
+        internal static string OrderSuccessDescription {
+            get {
+                return ResourceManager.GetString("OrderSuccessDescription", resourceCulture);
+            }
+        }
+        
+        internal static string OrderDetails {
+            get {
+                return ResourceManager.GetString("OrderDetails", resourceCulture);
+            }
+        }
+        
+        internal static string OrderDate {
+            get {
+                return ResourceManager.GetString("OrderDate", resourceCulture);
+            }
+        }
+        
+        internal static string OrderStatus {
+            get {
+                return ResourceManager.GetString("OrderStatus", resourceCulture);
+            }
+        }
+        
+        internal static string StatusPending {
+            get {
+                return ResourceManager.GetString("StatusPending", resourceCulture);
+            }
+        }
+        
+        internal static string OrderedItems {
+            get {
+                return ResourceManager.GetString("OrderedItems", resourceCulture);
+            }
+        }
+        
+        internal static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        internal static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        internal static string Price {
+            get {
+                return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        
+        internal static string ViewMyOrders {
+            get {
+                return ResourceManager.GetString("ViewMyOrders", resourceCulture);
+            }
+        }
     }
 }
