@@ -47,6 +47,11 @@ Thumbs.db
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
+# Sensitive config files
+appsettings.json
+appsettings.Development.json
+
+
 # User-specific files
 *.rsuser
 *.sln.docstates
@@ -62,6 +67,3 @@ artifacts/
 
 # Node.js
 node_modules/
-
-# Configuration files
-appsettings.json
