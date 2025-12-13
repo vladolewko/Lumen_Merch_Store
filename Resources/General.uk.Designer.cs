@@ -14,21 +14,21 @@ namespace Lumen_Merch_Store.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SharedResource_en {
+    internal class General_uk {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SharedResource_en() {
+        internal General_uk() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Lumen_Merch_Store.Resources.SharedResource_en", typeof(SharedResource_en).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Lumen_Merch_Store.Resources.General_uk", typeof(General_uk).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,45 +45,105 @@ namespace Lumen_Merch_Store.Resources {
             }
         }
         
-        internal static string NameRequired {
+        internal static string Home {
             get {
-                return ResourceManager.GetString("NameRequired", resourceCulture);
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
-        internal static string NameMaxLength {
+        internal static string AboutUs {
             get {
-                return ResourceManager.GetString("NameMaxLength", resourceCulture);
+                return ResourceManager.GetString("AboutUs", resourceCulture);
             }
         }
         
-        internal static string EmailRequired {
+        internal static string AdminPanel {
             get {
-                return ResourceManager.GetString("EmailRequired", resourceCulture);
+                return ResourceManager.GetString("AdminPanel", resourceCulture);
             }
         }
         
-        internal static string EmailFormat {
+        internal static string SearchPlaceholder {
             get {
-                return ResourceManager.GetString("EmailFormat", resourceCulture);
+                return ResourceManager.GetString("SearchPlaceholder", resourceCulture);
             }
         }
         
-        internal static string PhoneFormat {
+        internal static string Find {
             get {
-                return ResourceManager.GetString("PhoneFormat", resourceCulture);
+                return ResourceManager.GetString("Find", resourceCulture);
             }
         }
         
-        internal static string UrlFormat {
+        internal static string Reset {
             get {
-                return ResourceManager.GetString("UrlFormat", resourceCulture);
+                return ResourceManager.GetString("Reset", resourceCulture);
             }
         }
         
-        internal static string UrlMaxLength {
+        internal static string Apply {
             get {
-                return ResourceManager.GetString("UrlMaxLength", resourceCulture);
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        internal static string FooterRights {
+            get {
+                return ResourceManager.GetString("FooterRights", resourceCulture);
+            }
+        }
+        
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        internal static string Hero_Title {
+            get {
+                return ResourceManager.GetString("Hero_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Hero_Subtitle {
+            get {
+                return ResourceManager.GetString("Hero_Subtitle", resourceCulture);
+            }
+        }
+        
+        internal static string Hero_Button {
+            get {
+                return ResourceManager.GetString("Hero_Button", resourceCulture);
+            }
+        }
+        
+        internal static string Bestsellers_Title {
+            get {
+                return ResourceManager.GetString("Bestsellers_Title", resourceCulture);
+            }
+        }
+        
+        internal static string NewArrivals_Title {
+            get {
+                return ResourceManager.GetString("NewArrivals_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Universes_Title {
+            get {
+                return ResourceManager.GetString("Universes_Title", resourceCulture);
+            }
+        }
+        
+        internal static string NoProductsYet {
+            get {
+                return ResourceManager.GetString("NoProductsYet", resourceCulture);
             }
         }
     }

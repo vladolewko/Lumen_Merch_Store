@@ -1,18 +1,66 @@
-﻿@{
+﻿@model Lumen_Merch_Store.ViewModels.HomeViewModel
+
+@{
     ViewData["Title"] = General["Home"];
 }
 
-<section class="hero" style="background-image: url('/images/hero-bg.jpg');">
+<section class="hero"
+    style="background-image: url('/images/hero-bg.jpg');">
     <div class="hero-content">
         <h1>@General["Hero_Title"]</h1>
         <p>@General["Hero_Subtitle"]</p>
-        <a href="@Url.Action("Products", "Catalogue")" class="btn btn-primary">@General["Hero_Button"]</a>
+        <a href="@Url.Action("Products", "Catalogue")"
+            class="btn btn-primary">@General["Hero_Button"]</a>
     </div>
 </section>
-@* *@
-@* <section class="section container"> *@
-@*     <h2>@General["Bestsellers_Title"]</h2> *@
-@*     <div class="product-grid"> *@
-@*         $1$ Тут буде цикл з товарами #1# *@
-@*     </div> *@
-@* </section> *@
+
+<section class="section container">
+    <h2>@General["Bestsellers_Title"]</h2>
+    <div class="product-grid row">
+        @foreach (var product in Model.BestsellerProducts)
+        {
+            <partial name="_ProductCard"
+                model="product"/>
+        }
+
+        @if (!Model.BestsellerProducts.Any())
+        {
+            <div class="col-12 text-center py-5">
+                <p>@General["NoProductsYet"]</p>
+            </div>
+        }
+    </div>
+</section>
+
+@if (Model.NewProducts.Any())
+{
+    <section class="section container">
+        <h2>@General["NewArrivals_Title"]</h2>
+        <div class="product-grid row">
+            @foreach (var product in Model.NewProducts)
+            {
+                <partial name="_ProductCard"
+                    model="product"/>
+            }
+        </div>
+    </section>
+}
+
+@* @if (Model.FeaturedUniverses.Any()) *@
+@* { *@
+@*     <section class="section container"> *@
+@*         <h2>@General["Universes_Title"]</h2> *@
+@*         <div class="row universe-grid"> *@
+@*             @foreach (var universe in Model.FeaturedUniverses) *@
+@*             { *@
+@*                 <a href="@Url.Action("Products", "Catalogue", new { universeId = universe.Id })" *@
+@*                     class="card universe-card"> *@
+@*                     <div class="card-body"> *@
+@*                         <h5 class="card-title">@universe.Name</h5> *@
+@*                         <p class="card-text">@Catalogue["ViewProducts"] (@(universe.Count ?? 0))</p> *@
+@*                     </div> *@
+@*                 </a> *@
+@*             } *@
+@*         </div> *@
+@*     </section> *@
+@* } *@

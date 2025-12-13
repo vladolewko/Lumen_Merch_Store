@@ -122,5 +122,29 @@ namespace Lumen_Merch_Store.Resources {
                 return ResourceManager.GetString("Hero_Button", resourceCulture);
             }
         }
+        
+        internal static string Bestsellers_Title {
+            get {
+                return ResourceManager.GetString("Bestsellers_Title", resourceCulture);
+            }
+        }
+        
+        internal static string NewArrivals_Title {
+            get {
+                return ResourceManager.GetString("NewArrivals_Title", resourceCulture);
+            }
+        }
+        
+        internal static string Universes_Title {
+            get {
+                return ResourceManager.GetString("Universes_Title", resourceCulture);
+            }
+        }
+        
+        internal static string NoProductsYet {
+            get {
+                return ResourceManager.GetString("NoProductsYet", resourceCulture);
+            }
+        }
     }
 }
