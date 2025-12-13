@@ -103,4 +103,9 @@
   <data name="Quantity" xml:space="preserve"><value>Кількість</value></data>
   <data name="Price" xml:space="preserve"><value>Ціна</value></data>
   <data name="ViewMyOrders" xml:space="preserve"><value>Мої замовлення</value></data>
+  
+  <!-- Access Denied -->
+  <data name="AccessDenied" xml:space="preserve"><value>Доступ заборонено</value></data>
+  <data name="AccessDeniedDescription" xml:space="preserve"><value>У вас немає дозволу на доступ до цієї сторінки.</value></data>
+  <data name="BackToHome" xml:space="preserve"><value>На головну</value></data>
 </root>

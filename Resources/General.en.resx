@@ -67,4 +67,9 @@
     <data name="Quantity" xml:space="preserve"><value>Quantity</value></data>
     <data name="Price" xml:space="preserve"><value>Price</value></data>
     <data name="ViewMyOrders" xml:space="preserve"><value>View My Orders</value></data>
+    
+    <!-- Access Denied -->
+    <data name="AccessDenied" xml:space="preserve"><value>Access Denied</value></data>
+    <data name="AccessDeniedDescription" xml:space="preserve"><value>You do not have permission to access this page.</value></data>
+    <data name="BackToHome" xml:space="preserve"><value>Back to Home</value></data>
 </root>

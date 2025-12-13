@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Lumen Admin</title>
-    <link href="[https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap)" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/lumen-styles.css" />
 </head>
 <body class="admin-body">
@@ -16,6 +17,7 @@
         <nav class="sidebar-nav">
             <ul>
                 <li><a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+                <li><a asp-area="Admin" asp-controller="Orders" asp-action="Index">Orders</a></li>
                 <li><a asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a></li>
                 <li><a asp-area="Admin" asp-controller="Categories" asp-action="Index">Categories</a></li>
                 <li><a asp-area="Admin" asp-controller="Universes" asp-action="Index">Universes</a></li>

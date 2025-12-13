@@ -368,5 +368,23 @@ namespace Lumen_Merch_Store.Resources {
                 return ResourceManager.GetString("ViewMyOrders", resourceCulture);
             }
         }
+        
+        internal static string AccessDenied {
+            get {
+                return ResourceManager.GetString("AccessDenied", resourceCulture);
+            }
+        }
+        
+        internal static string AccessDeniedDescription {
+            get {
+                return ResourceManager.GetString("AccessDeniedDescription", resourceCulture);
+            }
+        }
+        
+        internal static string BackToHome {
+            get {
+                return ResourceManager.GetString("BackToHome", resourceCulture);
+            }
+        }
     }
 }

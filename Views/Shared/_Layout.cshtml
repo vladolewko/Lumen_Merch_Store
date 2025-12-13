@@ -24,13 +24,13 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="csrf-token" content="@Html.AntiForgeryToken()">
     <title>@ViewData["Title"] - Lumen Store</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/lumen-styles.css"/>
 </head>
 <body>
+@Html.AntiForgeryToken()
 <header class="main-header">
     <nav class="container main-nav">
         <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">LUMEN</a>
