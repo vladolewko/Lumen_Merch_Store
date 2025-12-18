@@ -47,21 +47,26 @@
             @if (Model.ProductSizes != null && Model.ProductSizes.Any())
             {
                 <div class="form-group">
-                    <label for="size-select">Розмір:</label>
-                    <select id="size-select" class="form-select">
+                    <label>Розмір:</label>
+                    <div class="size-selector">
+                        @{ var isFirst = true; }
                         @foreach (var size in Model.ProductSizes)
                         {
-                            <option value="@size.Id">@size.Size</option>
+                            <div class="size-option">
+                                <input type="radio" name="size" id="size-@size.Id" value="@size.Id" @(isFirst ? "checked" : "")>
+                                <label for="size-@size.Id">@size.Size</label>
+                            </div>
+                            isFirst = false;
                         }
-                    </select>
+                    </div>
                 </div>
             }
             
-            <!-- Вибір кількості (залишається як є, керується JS) -->
+            <!-- Вибір кількості -->
             <div class="form-group">
-                <label for="quantity-input">Кількість:</label>
+                <label>Кількість:</label>
                 <div class="quantity-selector">
-                    <button class="btn-quantity" type="button" aria-label="Зменшити кількість">-</button>
+                    <button class="btn-quantity" type="button" aria-label="Зменшити кількість">−</button>
                     <input type="text" id="quantity-input" value="1" readonly>
                     <button class="btn-quantity" type="button" aria-label="Збільшити кількість">+</button>
                 </div>
@@ -80,4 +85,3 @@
         </div>
     </div>
 </div>
-

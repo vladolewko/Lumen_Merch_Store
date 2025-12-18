@@ -1,0 +1,228 @@
+// Product Detail Page Styles
+
+.product-detail-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  padding: 3rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+}
+
+.product-gallery {
+  img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .product-universe {
+    color: var(--primary-accent);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+
+  .product-title {
+    font-size: 2.5rem;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .product-price {
+    font-size: 1.75rem;
+    color: var(--primary-accent);
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+
+  .product-description {
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+}
+
+.product-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    label {
+      color: var(--text-light);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+// Size Selector - Radio Button Style
+.size-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  .size-option {
+    position: relative;
+
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + label {
+        background-color: var(--primary-accent);
+        color: var(--bg-dark);
+        border-color: var(--primary-accent);
+        font-weight: 700;
+      }
+
+      &:focus + label {
+        box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.3);
+      }
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+      height: 50px;
+      padding: 0 1rem;
+      background-color: var(--surface-color);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: var(--text-light);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: var(--primary-accent);
+        background-color: rgba(250, 204, 21, 0.1);
+      }
+    }
+  }
+}
+
+// Quantity Selector - Modern Style
+.quantity-selector {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--surface-color);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+
+  .btn-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: var(--primary-accent);
+      color: var(--bg-dark);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  #quantity-input {
+    width: 60px;
+    height: 48px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-white);
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// Product Actions
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+
+  .btn-add-to-cart {
+    flex: 1;
+    min-width: 200px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+
+      svg {
+        fill: #ef4444;
+        stroke: #ef4444;
+      }
+    }
+  }
+}
+
